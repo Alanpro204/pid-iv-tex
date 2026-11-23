@@ -12,12 +12,12 @@
 \contentsline {subsection}{2.3 Especificación formal de requisitos funcionales y no funcionales.}{16}{section*.22}%
 \contentsline {subsection}{2.4 Diseño de la arquitectura.}{20}{section*.24}%
 \contentsline {subsection}{Conclusiones del capítulo.}{21}{section*.26}%
-\contentsline {section}{\MakeUppercase []{Capítulo III (opcional): Diseño de base de datos, prototipos funcionales de interfaz, codificación}}{22}{section*.27}%
-\contentsline {subsection}{3.1 Diseño de la base de datos.}{22}{section*.28}%
-\contentsline {subsection}{3.2 Prototipos funcionales de interfaz.}{22}{section*.29}%
-\contentsline {subsection}{3.3 Codificación.}{23}{section*.30}%
-\contentsline {subsection}{Conclusiones del capítulo.}{23}{section*.31}%
-\contentsline {section}{\MakeUppercase []{Conclusiones}}{24}{section*.32}%
-\contentsline {section}{\MakeUppercase []{Recomendaciones}}{25}{section*.33}%
-\contentsline {section}{\MakeUppercase []{Referencias Bibliográficas}}{26}{section*.34}%
-\contentsline {section}{\MakeUppercase []{Anexos}}{28}{section*.35}%
+\contentsline {section}{\MakeUppercase []{Capítulo III (opcional): Diseño de base de datos, prototipos funcionales de interfaz, codificación}}{23}{section*.27}%
+\contentsline {subsection}{3.1 Diseño de la base de datos.}{23}{section*.28}%
+\contentsline {subsection}{3.2 Prototipos funcionales de interfaz.}{23}{section*.29}%
+\contentsline {subsection}{3.3 Codificación.}{24}{section*.30}%
+\contentsline {subsection}{Conclusiones del capítulo.}{24}{section*.31}%
+\contentsline {section}{\MakeUppercase []{Conclusiones}}{25}{section*.32}%
+\contentsline {section}{\MakeUppercase []{Recomendaciones}}{26}{section*.33}%
+\contentsline {section}{\MakeUppercase []{Referencias Bibliográficas}}{27}{section*.34}%
+\contentsline {section}{\MakeUppercase []{Anexos}}{29}{section*.35}%

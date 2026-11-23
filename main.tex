@@ -624,7 +624,14 @@ Para estructurar el sistema se adopta el patrón arquitectónico Modelo-Vista-Co
 \vacio
 \tituloII{Conclusiones del capítulo.}
 
-Las conclusiones se orientan a establecer los argumentos que respaldan la posición científica que adopta el autor a partir de la aplicación del enfoque, metodología y métodos de Ingeniería de Software aplicados para lograr cumplir el objetivo, resolver el problema científico planteado y obtener un resultado práctico, destacando la pertinencia de las decisiones tomadas a lo largo del proceso de desarrollo de software descrito, en particular las referidas a las necesidades del cliente, la propuesta de solución técnica, la especificación formal de requisitos y el diseño de la arquitectura.
+En este capítulo se definieron las bases técnicas de la solución a partir del diagnóstico realizado en el Capítulo I. Del análisis efectuado se concluye lo siguiente:
+
+\begin{itemize}[parsep=5.7bp]
+  \item La identificación de las necesidades del cliente evidenció que los desarrolladores cubanos requieren cobrar por sus productos y servicios de forma ágil, con una única integración y sin depender de largos plazos de espera ni de adaptaciones complejas a cada plataforma de pago nacional.
+  \item La propuesta de solución técnica, un sistema web que actúa como capa intermedia entre las aplicaciones de los desarrolladores y las plataformas de pago, da respuesta a dichas necesidades mediante una interfaz común, la generación de enlaces de pago y la notificación automática de los resultados. Su desarrollo se apoya en tecnologías maduras y compatibles entre sí (Next.js, PostgreSQL, Prisma ORM, Zod y MinIO) que comparten un único lenguaje, TypeScript.
+  \item La especificación de los requisitos funcionales, organizados por actores y priorizados según su importancia para la primera versión, permite delimitar el alcance del sistema y mantener la trazabilidad con las necesidades del cliente.
+  \item El diseño de la arquitectura, basado en el patrón Modelo-Vista-Controlador, separa las responsabilidades del sistema en capas, lo que facilita su mantenimiento y sus pruebas, y constituye el fundamento para el diseño de la base de datos, los prototipos de interfaz y la codificación que se abordan en el capítulo siguiente.
+\end{itemize}
 
 \vacio
 \vacio
