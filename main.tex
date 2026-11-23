@@ -1,0 +1,685 @@
+% !TEX program = pdflatex
+% =====================================================================
+%  Informe técnico PID IV — Alain Torres Rodríguez
+%  Réplica en LaTeX del documento Word original.
+%  Compilar con LuaLaTeX o XeLaTeX (usa Arial y Times New Roman del sistema)
+%  o con pdfLaTeX (usa Helvetica, de métricas idénticas a Arial):
+%      latexmk -lualatex main.tex      |  latexmk -pdf main.tex
+%
+%  Medidas tomadas del .docx original:
+%   - Papel Carta (21,59 x 27,94 cm), márgenes laterales 2 cm,
+%     encabezado y pie a 2 cm del borde; márgenes superior/inferior
+%     propios de cada sección.
+%   - Arial; interlineado 1,5 (Word: 1,5 x 1,15 x tamaño).
+%   - Sin división silábica automática, como en Word.
+% =====================================================================
+\documentclass[12pt]{article}
+
+\usepackage[paperwidth=612bp,paperheight=792bp,
+            left=56.7bp,right=56.7bp,top=82.35bp,bottom=87.19bp,
+            headheight=13bp,headsep=14.15bp,footskip=28.37bp]{geometry}
+\usepackage{iftex}
+\ifPDFTeX
+  % pdfLaTeX: Helvetica (Nimbus Sans) tiene exactamente las mismas
+  % anchuras que Arial, por lo que los saltos de línea coinciden.
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{lmodern}
+  \usepackage{helvet}
+  \renewcommand{\familydefault}{\sfdefault}
+  \newcommand\timesnr{\fontfamily{ptm}\selectfont}
+\else
+  % LuaLaTeX / XeLaTeX: fuentes originales del documento
+  \usepackage{fontspec}
+  \setmainfont{Arial}
+  \setsansfont{Arial}
+  \newfontfamily\timesnr{Times New Roman}
+\fi
+\usepackage[spanish,es-noshorthands,es-lcroman,es-nodecimaldot]{babel}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage[normalem]{ulem}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage[hidelinks,hypertexnames=false,bookmarksnumbered=false,
+            pdftitle={Sistema de microtransacciones mediante plataformas de pago nacionales},
+            pdfauthor={Alain Torres Rodríguez},
+            pdfsubject={Informe técnico. Proyecto Investigación y Desarrollo IV}]{hyperref}
+
+% ---------------------------------------------------------------------
+%  Párrafo base (estilo "Normal" de Word)
+% ---------------------------------------------------------------------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\raggedbottom                     % Word no estira el espacio vertical
+\widowpenalty=10000 \clubpenalty=10000 % control de viudas y huérfanas de Word
+\hyphenpenalty=10000              % Word no divide palabras
+\tolerance=2000 \emergencystretch=3em \hbadness=10000 \vbadness=10000
+% Justificado al estilo de Word: los espacios se estiran libremente pero
+% solo se comprimen hasta un 25 % (TeX permite por defecto mucho más).
+\AddToHook{selectfont}{\spaceskip=\fontdimen2\font
+  plus \fontdimen3\font minus .25\fontdimen2\font\relax}
+
+% Tamaños con interlineado de Word (factor de línea de Arial = 1,15)
+\newcommand\doceUnoCinco{\fontsize{12bp}{20.7bp}\selectfont}      % 12 pt, 1,5
+\newcommand\onceUnoCinco{\fontsize{11bp}{18.975bp}\selectfont}    % 11 pt, 1,5
+\newcommand\onceUnoQuince{\fontsize{11bp}{14.5475bp}\selectfont}  % 11 pt, 1,15
+\newcommand\onceSencillo{\fontsize{11bp}{12.65bp}\selectfont}     % 11 pt, sencillo
+\newcommand\doceSencillo{\fontsize{12bp}{13.8bp}\selectfont}      % 12 pt, sencillo
+\newcommand\diezSencillo{\fontsize{10bp}{11.5bp}\selectfont}      % 10 pt, sencillo
+
+\renewcommand\normalsize{\fontsize{12bp}{20.7bp}\selectfont}
+
+% Párrafo vacío de Word (una línea en blanco del tamaño actual)
+\newcommand\vacio{\leavevmode\par}
+
+% Espacio "anterior" de un párrafo situado al inicio de página
+\newcommand\espacioInicial[1]{\vspace*{\dimexpr#1-\topskip\relax}\prevdepth=-1000pt\relax}
+
+% Versalitas sintéticas, como las genera Word (minúsculas al 80 %)
+\ExplSyntaxOn
+\NewDocumentCommand\versalitas{m}
+  {
+    \text_map_inline:nn {#1}
+      {
+        \str_if_eq:eeTF { \text_uppercase:n {##1} } { ##1 }
+          { ##1 }
+          { { \fontsize{\fp_eval:n {0.8 * \use:c{f@size}} pt}{0pt}\selectfont \text_uppercase:n {##1} } }
+      }
+  }
+\ExplSyntaxOff
+
+% ---------------------------------------------------------------------
+%  Secciones de Word: márgenes, encabezado y pie
+% ---------------------------------------------------------------------
+%  \seccion{superior}{sep. encabezado}{inferior}{sep. pie}{primera línea}
+%  El encabezado empieza a 2 cm del borde superior y el pie termina a 2 cm
+%  del borde inferior. Como en Word, la línea base de la primera línea queda
+%  a la altura de la ascendente de Arial (0,9375 x tamaño) bajo el margen y
+%  el espacio adicional del interlineado se añade debajo del texto; el margen
+%  inferior incluye la descendente (2,54 pt) para que una línea solo quepa
+%  si su descendente no rebasa el margen de Word.
+\newcommand\seccion[5]{%
+  \newgeometry{left=56.7bp,right=56.7bp,top=#1,bottom=#3,
+               headheight=13bp,headsep=#2,footskip=#4}%
+  \setlength{\topskip}{#5}}
+
+\newcommand\textoEncabezado{}
+\fancypagestyle{informe}{%
+  \fancyhf{}%
+  \fancyhead[R]{\diezSencillo\itshape\rule[-2.12bp]{0pt}{11.5bp}\textoEncabezado}%
+  \fancyfoot[C]{\diezSencillo\thepage}%
+  \renewcommand{\headrulewidth}{0pt}%
+  \renewcommand{\footrulewidth}{0pt}}
+\fancypagestyle{portada}{\fancyhf{}%
+  \renewcommand{\headrulewidth}{0pt}\renewcommand{\footrulewidth}{0pt}}
+
+% ---------------------------------------------------------------------
+%  Títulos (estilos "Título 1" y "Título 2" de Word)
+% ---------------------------------------------------------------------
+%  Título 1: Arial 14 negrita, versalitas, justificado, 1,5,
+%  11,35 pt antes y después; siempre al inicio de página.
+%  \tituloI*{...} : sin versalitas (así está "Introducción" en el original).
+%  \tituloI[sangría]{...} : "Anexos" lleva una numeración vacía seguida de
+%                            tabulación, que lo desplaza 1,27 cm.
+\NewDocumentCommand\tituloI{s O{0pt} m}{%
+  \clearpage
+  \espacioInicial{11.35bp}%
+  \phantomsection
+  \addcontentsline{toc}{section}{\texorpdfstring{\MakeUppercase{#3}}{#3}}%
+  {\parskip=0pt\fontsize{14bp}{24.15bp}\selectfont\bfseries
+   \hspace*{#2}\rule[-2.97bp]{0pt}{16.095bp}\IfBooleanTF{#1}{#3}{\versalitas{#3}}\par}%
+  \nopagebreak
+  % 11,35 pt después + resto de la línea de 14 pt (24,15 - 13,125) hasta la
+  % ascendente de la primera línea del texto que sigue
+  \vspace{\dimexpr 11.35bp + 11.025bp - \baselineskip
+          + 0.9375\dimexpr\csname f@size\endcsname pt\relax - \parskip\relax}}
+
+%  Título 2: Arial 12 negrita, justificado, 1,5, 5,65 pt antes y después.
+\newcommand\tituloII[1]{%
+  \par\vspace{5.65bp}%
+  {\parskip=0pt\doceUnoCinco\bfseries
+   \leavevmode\phantomsection\addcontentsline{toc}{subsection}{#1}%
+   #1\par}%
+  \nopagebreak
+  \vspace{\dimexpr5.65bp-\parskip\relax}}
+
+% ---------------------------------------------------------------------
+%  Índice (estilos "TDC 1" y "TDC 2" de Word)
+% ---------------------------------------------------------------------
+%  TDC 1: Arial 11 mayúsculas, 1,5, tabulación derecha con puntos a
+%         17,79 cm (5,55 pt más allá del margen derecho).
+%  TDC 2: Arial 11, sangría 0,5 cm, tabulación derecha a 17,09 cm.
+\makeatletter
+\renewcommand*\l@section[2]{%
+  \par{\onceUnoCinco\leftskip=0pt\rightskip=0pt\parfillskip=0pt
+       #1\nobreak\xleaders\hbox{.}\hfill\nobreak\hbox{#2}\kern-5.55bp\par}}
+\renewcommand*\l@subsection[2]{%
+  \par{\onceUnoCinco\leftskip=14.2bp\rightskip=0pt\parfillskip=0pt
+       #1\nobreak\xleaders\hbox{.}\hfill\nobreak\hbox{#2}\kern14.15bp\par}}
+\newcommand\indiceGeneral{\@starttoc{toc}}
+\makeatother
+
+% Listas numeradas de Word: número a 0,63 cm, texto a 1,27 cm
+\setlist[enumerate]{label=\arabic*.,leftmargin=36bp,labelwidth=18bp,
+                    labelsep=0pt,align=left,topsep=0pt,partopsep=0pt,
+                    itemsep=0pt}
+
+\begin{document}
+
+% =====================================================================
+%  Sección 1 — Portada
+% =====================================================================
+\seccion{82.35bp}{14.15bp}{87.19bp}{28.37bp}{11.25bp}
+\pagestyle{portada}
+\pagenumbering{alph}
+\doceUnoCinco
+% Logotipo anclado: 5,48 cm desde el margen izquierdo y 1,04 cm bajo el
+% inicio del párrafo; 6,85 x 2,78 cm.
+\noindent\rule[-2.54bp]{0pt}{13.79bp}%
+\rlap{\hspace{155.25bp}\smash{\raisebox{-96.85bp}{%
+  \includegraphics[width=194.05bp,height=78.65bp]{imagenes/logo.jpg}}}}\par
+\begingroup\centering
+\timesnr\vacio\vacio\vacio\vacio\vacio\normalfont
+\textbf{ Facultad de Tecnologías Interactivas}\par
+\vacio\vacio
+{\fontsize{24bp}{41.4bp}\selectfont \textbf{Sistema de microtransacciones mediante plataformas de pago nacionales}\par}
+\vacio\vacio
+{\fontsize{14bp}{24.15bp}\selectfont
+\textbf{INFORME TÉCNICO}\par
+ASIGNATURA: PROYECTO INVESTIGACIÓN Y DESARROLLO IV\par
+DISCIPLINA: PRÁCTICA PROFESIONAL\par}
+{\timesnr\doceSencillo\vacio\vacio}
+\vacio\vacio\vacio
+\textbf{Autor:} Alain Torres Rodríguez\par
+\textbf{Tutor(es):} MsC. Yadira Ramírez Rodríguez\par
+\vacio\vacio
+\ La Habana, Octubre de 2026\par
+\vspace{5.65bp}
+Año del centenario del comandante en jefe Fidel Castro Ruz\par
+\endgroup
+
+% =====================================================================
+%  Sección 2 — Resumen / Abstract (numeración romana desde i)
+% =====================================================================
+\seccion{82.35bp}{14.15bp}{87.19bp}{28.37bp}{11.25bp}
+\pagestyle{informe}
+\renewcommand\textoEncabezado{Resumen}
+\pagenumbering{roman}
+\doceUnoCinco
+\espacioInicial{11.35bp}
+\rule[-2.54bp]{0pt}{13.79bp}\textbf{Resumen}\par
+% Word no suma el espacio posterior de un párrafo y el anterior del
+% siguiente: usa el mayor de los dos (11,35 pt).
+{\setlength{\parskip}{11.35bp}
+En los últimos años, el mercado de aplicaciones móviles en Cuba ha experimentado un crecimiento impulsado por plataformas como Apklis, que desde 2018 permite a los desarrolladores publicar y comercializar sus aplicaciones. De igual manera, se ha fortalecido el desarrollo de sitios y aplicaciones web gracias a servicios de alojamiento como Espacio 3W y al alquiler de servidores privados virtuales ofrecidos por ETECSA. Sin embargo, muchas operaciones comerciales continúan realizándose a través de aplicaciones de mensajería externas, como WhatsApp, Telegram o Messenger, donde los pagos se acuerdan mediante Transfermóvil, EnZona o efectivo contra entrega. Este proceso suele implicar el uso de cuentas personales no vinculadas formalmente a una entidad comercial ni a un Trabajo Por Cuenta Propia (TCP), lo que reduce la confianza del cliente y dificulta la consolidación del comercio digital.
+
+El presente trabajo propone un sistema que permita a los desarrolladores registrar productos, generar enlaces de pago y recibir notificaciones sobre la confirmación de las transacciones, con el fin de entregar automáticamente el producto o recompensa correspondiente. Con ello se busca reducir la dependencia de canales externos de comunicación, mejorar la seguridad de las transacciones y facilitar la gestión comercial dentro de aplicaciones móviles nacionales. La implementación de este tipo de soluciones podría contribuir a dinamizar el mercado de videojuegos, comercios electrónicos y aplicaciones móviles en Cuba, además de promover el uso de medios de pago digitales y fortalecer la confianza en las transacciones realizadas con moneda nacional.
+
+\textbf{Palabras clave: }Microtransacciones, aplicaciones nacionales, pagos online\par}
+
+\newpage
+\textbf{\textit{Abstract}}\par
+\vspace{11.35bp}
+\textit{In recent years, the mobile application market in Cuba has grown thanks to platforms such as Apklis, which since 2018 has enabled developers to publish and even sell their own applications. Similarly, the ecosystem of websites and web applications has expanded due to hosting services provided by Espacio 3W and the rental of Virtual Private Servers offered by ETECSA. However, commercial transactions continue to be carried out mainly through external messaging applications such as WhatsApp, Telegram, or Messenger, where payments are arranged through transfers using Transfermóvil or EnZona, or by cash on delivery. This communication channel, required to complete transactions through account numbers that are usually personal accounts not linked to any company or self-employed worker, undermines customer confidence in making payments.}\par
+\textit{This work proposes a system through which developers can register products, generate payment links from their applications, and receive notifications when a payment is completed, allowing them to deliver the corresponding product or reward automatically. This approach could help reduce dependence on external messaging channels, improve transaction security and traceability, and support the development of higher-quality video games, online stores, and mobile applications in Cuba. By facilitating more transparent and convenient digital transactions, it may also contribute to strengthening confidence in the use of the national currency and electronic payment methods.}\par
+\vacio
+\textbf{\textit{Keywords: }}\textit{microtransactions, national applications, online payments}\par
+\vacio
+\vacio
+
+% =====================================================================
+%  Sección 3 — Índice
+% =====================================================================
+\seccion{85bp}{16.8bp}{87.54bp}{28.72bp}{11.25bp}
+\renewcommand\textoEncabezado{índice}
+\doceUnoCinco
+\espacioInicial{11.35bp}
+\rule[-2.54bp]{0pt}{13.79bp}\textbf{Índice}\par
+\vspace{11.35bp}
+\indiceGeneral
+\vacio
+
+% =====================================================================
+%  Sección 4 — Introducción (numeración arábiga desde 1)
+% =====================================================================
+\seccion{85bp}{16.8bp}{87.54bp}{28.72bp}{10.31bp}
+\renewcommand\textoEncabezado{Introducción}
+\pagenumbering{arabic}
+\onceUnoCinco
+\setlength{\parskip}{5.7bp}
+
+\tituloI*{Introducción}
+
+En la actualidad el comercio electrónico se ha convertido en una de las principales vías de intercambio de activos en el mundo, y nuestro país no se ha quedado atrás, desde hace unos años, antes de la llegada del internet a nuestro territorio, ya existía por medio del llamado “Paquete semanal” un directorio de anuncios de compraventa llamado Revolico, el cual se utilizaba para encontrar personas que estuvieran vendiendo un producto específico o interesados en su compra, luego a la llegada del internet, mediante los puntos “WIFI\_ETECSA” comenzó la adopción de las redes sociales por la población cubana, en un principio con el fin de comunicarse con familiares de fuera del país, o con fines de entretenimiento, sin emabargo rápidamente se comenzó a observar el surgimiento de grupos en redes sociales y aplicaciones de mensajería con el único objetivo de comercializar productos o servicios. Luego con la llegada del internet mediante la red móvil, se consolidó la web como un espacio de intercambios comerciales.
+
+Con esta evolución en las comunicaciones, lo esperable sería que se observara una evolución en las formas de pago, con medios digitales que permitan a los cubanos realizar transacciones sin necesidad de salir de sus casas, y con ese objetivo, en 2015 ETECSA lanzó la primera versión de Transfermóvil, que le permitió a los clientes de los diferentes bancos nacionales realizar este tipo de operaciones desde su teléfono móvil mediante el protocolo de comunicación Unstructured Supplementary Service Data (USSD), para el envío de solicitudes y Short Message Service (SMS) para la recepción del resultado de las consultas. Luego en 2019 nace EnZona, una aplicación móvil que permitía tener los mismos beneficios que Transfermóvil, pero utilizando protocolo HTTPS para una mayor usabilidad y seguridad, ya que el usuario no tenía que salir de la aplicación para consultar su saldo o el resultado de una operación.
+
+Sin embargo la existencia de las pasarelas de pago no asegura su adopción por parte de los desarrolladores, ya que estos deben realizar trámites que en muchos casos son prohibitivos para negocios pequeños.
+
+\newpage
+\textbf{Transfermóvil}
+
+Es la pasarela de pagos más utilizada por la población debido a su configuración automática a la hora de crear una cuenta bancaria, y por la facilidad que brinda utilizar códigos USSD y SMS en el contexto cubano de problemas en las redes de comunicaciones.
+
+Sin embargo la contratación de la API de pagos pasa por varios inconvenientes, como:
+\begin{enumerate}[parsep=5.7bp]
+  \item Falta de documentación pública
+  \item Falta de comunicación con la comunidad de desarrolladores
+  \item Sistema complejo de implementación
+  \item Regulación de las direcciones IP que pueden tener acceso a este servicio
+\end{enumerate}
+
+\textbf{EnZona}
+
+Su adopción por parte de la población no es tan extensa como sí es el caso de transfermóvil debido a que los problemas de comunicación que afectan a nuestro país influyen en que las peticiones HTTPS tarden en enviarse y en llegar la respuesta.
+
+Esta sin embargo es la plataforma que mejor acceso brinda a los desarrolladores a su API, esto no significa que sea perfecta, presentando inconvenientes como:
+\begin{enumerate}[parsep=5.7bp]
+  \item Documentación pública existente, pero en algunos casos deficiente
+  \item Falta de comunicación con la comunidad de desarrolladores
+  \item Regulación de las direcciones IP que pueden tener acceso a este servicio
+\end{enumerate}
+
+\vacio
+Estas insuficiencias evidencian la necesidad de crear un ecosistema que permita a los desarrolladores cubanos comercializar sus productos y servicios a través de sus aplicaciones de una forma más accesible para ellos y sus clientes.
+
+Es por esto que mediante el presente informe técnico se busca responder ¿Cuál es la mejor manera de crear un sistema que unifique los métodos de pagos para los desarrolladores de aplicaciones cubanos? ¿De qué manera se logra crear un sistema como este con el nivel de seguridad necesario por la criticidad de las operaciones que se realizarán en este? ¿Qué características debe tener un sistema como este para conseguir su adopción por la comunidad de desarrolladores cubanos?
+
+Es por ello que el presente sistema tiene como principal objetivo: \textbf{Brindar a los desarrolladores de software cubanos, una plataforma segura, y con todas las características necesarias para vender sus productos y/o servicios desde sus propias aplicaciones o sitios web}.
+
+\textbf{Campo de acción:} La integración y gestión de microtransacciones mediante plataformas de pago nacionales en aplicaciones y sitios web desarrollados en Cuba, con énfasis en la generación de enlaces de pago, la confirmación de las transacciones y la notificación de sus resultados a las aplicaciones.
+\newpage
+
+Sin embargo, primero debemos definir sub objetivos más atómicos que nos permitan llegar al objetivo general antes mencionado.
+
+\textbf{Conocer el estado del arte:} Un estudio del estado del arte es necesario para conocer cómo lo hacen sistemas que ya están consolidados, y poder traer las buenas prácticas a nuestro producto.
+
+\textbf{Conocer las limitaciones del contexto nacional:} Cuáles son las limitantes que puede tener un software como este en el contexto de nuestro país, conocer el impacto de las sanciones impuestas por el gobierno de Estados Unidos sobre un sistema como el antes descrito.
+
+\textbf{Definir las características del software:} Una vez conocido el estado del arte y las limitaciones que tiene el contexto nacional, es necesario identificar cuales son los requisitios funcionales y casos de uso relevantes para el público identificado.
+
+\textbf{Definir los servicios externos y bibliotecas de terceros que utilizará el software:} El desarrollo de software actual no se realiza desde cero, siempre se utilizan componentes de terceros, por ejemplo bibliotecas o servicios, es necesario conocer cuales serán aquellas a utilizar.
+
+\textbf{Definir los requisitios no funcionales:} Se deben reconocer cuales serán las características del software a nivel no funcional, como la infraestructura, la usabilidad, componentes a utilizar, y rendimiento deseado.
+
+\textbf{Diseñar la arquitectura del software:} Hay que crear los cimientos del software antes de proceder a su construcción, es por esto que la arquitectura debe ser prioridad a la hora de crear una plataforma como esta.
+
+\textbf{Construir la primera versión del software:} Con el objetivo de probar el concepto, y conocer el nivel de aceptación se debe desarrollar una primera versión del software con los casos de uso y requisitos definidos con criticidad alta.
+
+\textbf{Probar del software:} Un software con una criticidad alta como este por su manejo de pagos, debe someterse a una serie de pruebas tanto a nivel funcional como no funcional para conocer la calidad del mismo y la seguridad que tiene antes de su lanzamiento.
+
+\vacio
+\newpage
+\textbf{Presupuestos hipotéticos}
+
+\textbf{Hipótesis:} El desarrollo de un sistema que integre plataformas de pago nacionales y proporcione mecanismos para generar enlaces de pago y notificar la confirmación de las transacciones puede facilitar la incorporación de microtransacciones en aplicaciones y sitios web cubanos.
+
+\textbf{Preguntas científicas:}
+\begin{enumerate}[parsep=5.7bp]
+  \item ¿Qué limitaciones técnicas y de acceso presentan las plataformas de pago nacionales para su integración en aplicaciones y sitios web cubanos?
+  \item ¿Qué requisitos funcionales y de seguridad debe cumplir un sistema de gestión de microtransacciones en el contexto cubano?
+  \item ¿Cómo diseñar una arquitectura que permita generar enlaces de pago y comunicar a las aplicaciones el resultado de las transacciones?
+  \item ¿En qué medida la solución propuesta facilita la integración de microtransacciones y cumple los requisitos definidos?
+\end{enumerate}
+
+\textbf{Métodos científicos:} Para el desarrollo de la investigación se empleará el método analítico-sintético en el estudio de las plataformas de pago nacionales y sus mecanismos de integración. Se utilizará la modelación para representar la arquitectura, los datos y las interacciones de la solución propuesta. Como parte del trabajo empírico, se realizará una revisión documental de fuentes oficiales y técnicas, y se aplicarán pruebas de software para evaluar el cumplimiento de los requisitos definidos. Los resultados de las pruebas se registrarán mediante una matriz de casos de prueba.
+
+Un sistema que permita a los desarrolladores de software cubanos poder cobrar por su trabajo de una forma sencilla, legal, y transparente provocará un crecimiento en el mercado de aplicaciones nacionales, lo cual ayudará a nuestro país a dar un paso más hacia la independencia tecnológica, ya que servicios que actualmente deben ser contratados a compañías de terceros países podrán tener una alternativa nacional de calidad en un mercado competitivo nacional.
+
+{\fontsize{11bp}{13.65bp}\selectfont\vacio\vacio}
+
+% =====================================================================
+%  Sección 5 — Capítulo I
+% =====================================================================
+\seccion{70.75bp}{2.55bp}{87.54bp}{28.72bp}{11.25bp}
+\renewcommand\textoEncabezado{Capítulo I}
+\doceUnoCinco
+\setlength{\parskip}{0pt}
+
+\tituloI{Capítulo I: Marco teórico y diagnóstico}
+
+En este capítulo se presentan los fundamentos teóricos que sustentan el desarrollo de un sistema de microtransacciones mediante plataformas de pago nacionales. Se abordan los conceptos relacionados con las microtransacciones, las pasarelas de pago y los mecanismos de integración y confirmación de las operaciones. Asimismo, se analizan soluciones similares para identificar sus aportes y limitaciones respecto al contexto cubano. Posteriormente, se describe el contexto en el que se desarrolla la investigación y las dificultades existentes para incorporar pagos en aplicaciones y sitios web nacionales. Finalmente, se exponen la metodología, los métodos y las herramientas seleccionados para desarrollar la propuesta.
+
+\vacio
+\tituloII{1.1 Fundamentos y referentes teórico-metodológicos sobre el objeto de estudio.}
+
+Los cobros en aplicaciones y sitios web son un problema que ya ha sido abordado en el mundo mediante plataformas que han brindado una solución accesible a los desarrolladores que buscan generar ingresos mediante sus productos y servicios, con referentes internacionales como Stripe, Google Pay o Mercado Pago. Como parte de los conceptos y conocimientos que sustentan la investigación se encuentran las microtransacciones, que son operaciones de pequeño importe, frecuentemente asociadas a bienes o servicios digitales, estos a su vez son implementados mediante una \textit{API }que es la encargada de conectar la aplicación con el sistema, y a este último con la pasarela de pagos, que es la plataforma responsable de realizar las transacciones bancarias asociadas a los pagos, y cuando un pago es completado, o rechazado, debe ser notificado correctamente mediante un sistema de notificaciones automáticas, basado en el mecanismo \textit{Webhook}. Y todo esto ocurre en el contexto nacional con sus complejidades, caracterizado por un estado de crisis económica y depreciación constante de la moneda nacional.
+
+\newpage
+\textbf{1.1.1 Microtransacciones}
+
+Las microtransacciones son operaciones económicas de pequeño importe, frecuentemente asociadas a la adquisición de bienes o servicios digitales dentro de aplicaciones y sitios web. En los videojuegos, por ejemplo, pueden utilizarse para comprar objetos virtuales, elementos de personalización o contenidos adicionales.
+
+En la presente investigación, las microtransacciones constituyen el tipo de operación que gestionará el sistema propuesto. Este facilitará que los desarrolladores reciban pagos mediante plataformas nacionales y que sus aplicaciones conozcan el resultado de cada operación para entregar el producto o servicio correspondiente.
+
+\vacio
+\textbf{1.1.2 Interfaces de programación de aplicaciones (API)}
+
+Una interfaz de programación de aplicaciones (API, por sus siglas en inglés) define un conjunto de operaciones y reglas que permite la comunicación entre sistemas de software. Mediante estas interfaces, una aplicación puede solicitar servicios e intercambiar información con otra sin conocer los detalles de su implementación interna.
+
+En la presente investigación, las API permitirán la comunicación entre las aplicaciones de los desarrolladores y el sistema propuesto, así como la integración de este con las plataformas de pago nacionales. A través de estas interfaces se podrán solicitar enlaces de pago y consultar el estado de las operaciones, de acuerdo con las capacidades que ofrezca cada plataforma.
+
+\textbf{1.1.3 Pasarelas de pago}
+
+Las pasarelas de pago son servicios que facilitan el procesamiento de pagos electrónicos mediante la comunicación entre los sistemas comerciales y los proveedores financieros que intervienen en una operación. Permiten transmitir las solicitudes de pago y obtener información sobre sus resultados, sin que deban confundirse con las entidades bancarias que ejecutan los movimientos de fondos.
+
+En la presente investigación, las plataformas de pago nacionales constituyen los servicios externos con los que se busca integrar el sistema propuesto. Este actuará como una capa de integración para facilitar que los desarrolladores incorporen cobros en sus aplicaciones, sin sustituir las funciones de las plataformas ni las de las entidades bancarias. El alcance de dicha integración dependerá de las interfaces disponibles y de las condiciones de acceso de cada proveedor.
+
+\textbf{1.1.4 Notificaciones automáticas mediante webhooks}
+
+Un webhook es un mecanismo de comunicación mediante el cual un sistema envía una solicitud HTTP a una dirección previamente configurada cuando ocurre un evento determinado. En el procesamiento de pagos, puede utilizarse para notificar cambios en el estado de una operación sin que el sistema receptor tenga que consultar continuamente si se han producido novedades.
+
+En la presente investigación, los webhooks permitirán que el sistema propuesto notifique a las aplicaciones de los desarrolladores los cambios relevantes en el estado de las transacciones. Para que estas notificaciones puedan utilizarse de forma confiable, será necesario verificar su autenticidad y contemplar reintentos y un procesamiento idempotente, es decir, evitar que la recepción repetida de una misma notificación provoque la entrega duplicada de un producto o servicio. La confirmación del pago deberá sustentarse en información validada de la plataforma correspondiente.
+
+\vacio
+\tituloII{1.2 Soluciones homólogas.}
+
+El análisis de soluciones homólogas permite identificar experiencias y mecanismos de integración que pueden servir como referentes para el desarrollo del sistema propuesto. En esta investigación se consideran Stripe y Mercado Pago como referentes internacionales de integración de pagos, así como Transfermóvil y EnZona por su relevancia en el contexto cubano. Aunque estas soluciones presentan diferencias en su alcance y funcionamiento, su estudio permite reconocer características aplicables a la gestión de microtransacciones.
+
+\newpage
+\textbf{1.2.1 Descripción y análisis de las particularidades relevantes}
+
+\textbf{Stripe}
+
+Stripe es una plataforma de servicios de pago que ofrece herramientas para incorporar cobros en aplicaciones y sitios web. Entre sus funcionalidades se encuentran las interfaces de programación de aplicaciones, la generación de enlaces de pago y las notificaciones mediante webhooks.
+
+Su principal interés para esta investigación radica en la experiencia de integración que proporciona a los desarrolladores y en sus mecanismos para gestionar el ciclo de vida de los pagos. Constituye un referente para estudiar la documentación de una API, la comunicación de cambios de estado y el tratamiento de solicitudes repetidas.
+
+\vacio
+\textbf{Mercado Pago}
+
+Mercado Pago es una plataforma de pagos que proporciona herramientas para realizar cobros electrónicos. Dispone de alternativas de integración que permiten incorporar procesos de pago en aplicaciones y sitios web, así como consultar operaciones y recibir notificaciones sobre sus resultados.
+
+Para el sistema propuesto, resulta relevante estudiar la relación entre la creación de una solicitud de pago, su procesamiento y la comunicación del resultado al comercio. Sin embargo, sus funcionalidades y condiciones de acceso dependen del país en el que opera, por lo que su análisis se utiliza como referencia funcional y no como evidencia de disponibilidad para desarrolladores establecidos en Cuba.
+
+\vacio
+\textbf{Transfermóvil}
+
+Transfermóvil es una solución nacional que permite realizar pagos y otras operaciones desde dispositivos móviles. Su análisis resulta necesario porque constituye una de las plataformas con las que se pretende integrar el sistema propuesto.
+
+En esta investigación interesa estudiar sus mecanismos de pago a comercios y las condiciones técnicas y contractuales para incorporar dichos mecanismos en aplicaciones de terceros. Debe distinguirse entre las operaciones que puede realizar un usuario desde la aplicación y los servicios de integración disponibles para un desarrollador. Las posibilidades de automatizar la confirmación de pagos deberán determinarse a partir de documentación oficial y de las condiciones de acceso al servicio.
+
+\vacio
+\textbf{EnZona}
+
+EnZona es una plataforma nacional que ofrece servicios relacionados con los pagos electrónicos y el comercio digital. Su estudio se orienta a identificar las posibilidades de integración que proporciona a las aplicaciones y sitios web que necesitan gestionar cobros.
+
+Para esta investigación resulta relevante examinar los mecanismos de autenticación, creación de operaciones y consulta o notificación de sus resultados que se encuentren disponibles en su documentación. También deben analizarse los requisitos de contratación y las condiciones de acceso, pues estos elementos delimitan las posibilidades reales de integración con el sistema propuesto.
+
+\vacio
+\textbf{Síntesis del análisis}
+
+Las soluciones internacionales estudiadas constituyen referentes para identificar buenas prácticas de integración, documentación y comunicación de los resultados de los pagos. Por su parte, el análisis de Transfermóvil y EnZona permite delimitar las posibilidades y restricciones del entorno nacional.
+
+A partir de esta comparación, el sistema propuesto se concibe como una capa de integración orientada a simplificar la incorporación de pagos nacionales en aplicaciones y sitios web. Su alcance no consiste en sustituir las plataformas existentes, sino en facilitar su utilización mediante una interfaz común, la gestión de enlaces de pago y la notificación del resultado de las operaciones, siempre que las capacidades y condiciones de cada proveedor lo permitan.
+
+\vacio
+\newpage
+\tituloII{1.3 Diagnóstico organizacional.}
+
+La investigación se desarrolla en el contexto de aplicaciones como “El Yerro Menú”, cuyos productos y servicios se comercializan mediante su sitio web. Para caracterizar la gestión actual de los cobros se empleó la observación del proceso, con el propósito de identificar los actores involucrados, las actividades del proceso y las dificultades existentes.
+
+\vacio
+Actualmente, el proceso de cobro consiste en ponerse en contacto con el proveedor para que este le explique las condiciones del pago, y los métodos que puede utilizar, usualmente enviando un número de tarjeta y un número de teléfono para confirmar el pago. A partir de la información recopilada se identificó que el proveedor pierde demasiado tiempo en interactuar con clientes que no están realmente interesados en realizar la comra, además de que la confianza del cliente se ve afectada al momento de enviar una transferencia bancara a una cuenta bancaria de un desconocido.
+
+\vacio
+Estas insuficiencias evidencian la necesidad de facilitar la integración con las plataformas de pago nacionales y automatizar, cuando sus capacidades lo permitan, la confirmación de las operaciones y la comunicación de sus resultados.
+
+\vacio
+\tituloII{1.4 Metodología, métodos y herramientas.}
+
+El desarrollo del sistema propuesto se organizará mediante un enfoque iterativo e incremental, que permitirá construir y evaluar progresivamente sus funcionalidades. Se priorizarán los mecanismos de integración con las plataformas de pago nacionales, la generación de enlaces de pago y la notificación del resultado de las operaciones. Este enfoque permitirá ajustar la solución a las necesidades identificadas y a las condiciones técnicas de los servicios externos.
+
+Para el desarrollo de la investigación se emplearán los siguientes métodos y técnicas:
+
+\vacio
+\textbf{Método analítico-sintético.} Se utilizará para estudiar los conceptos relacionados con las microtransacciones, las interfaces de programación de aplicaciones, las pasarelas de pago y los mecanismos de notificación. Asimismo, permitirá analizar las soluciones homólogas y seleccionar las características pertinentes para el contexto de la investigación.
+
+\vacio
+\textbf{Modelación.} Se empleará para representar los componentes del sistema, sus relaciones y los intercambios de información entre las aplicaciones de los desarrolladores y las plataformas de pago. También permitirá describir los datos y los estados de las operaciones, facilitando la comprensión y el diseño de la solución.
+
+\vacio
+\textbf{Revisión documental.} Se consultarán publicaciones académicas, documentación técnica y fuentes oficiales relacionadas con las plataformas estudiadas. Esta técnica permitirá fundamentar los conceptos utilizados e identificar las posibilidades y condiciones de integración de los servicios de pago nacionales.
+
+\vacio
+\textbf{Entrevistas semiestructuradas.} Se propone su aplicación a desarrolladores o responsables de emprendimientos que comercialicen productos y servicios mediante aplicaciones o sitios web. Su finalidad será conocer cómo gestionan actualmente los cobros, qué dificultades encuentran y qué necesidades consideran prioritarias. La información recopilada servirá para complementar el diagnóstico y orientar la identificación de requisitos.
+
+\vacio
+\textbf{Pruebas de software.} Se realizarán para evaluar el cumplimiento de los requisitos funcionales y no funcionales definidos. Se prestará especial atención a la confirmación de las operaciones, la autenticidad de las notificaciones y la prevención del procesamiento duplicado. Los resultados se registrarán mediante una matriz de casos de prueba que incluirá las condiciones de ejecución, los resultados esperados y los obtenidos.
+
+\vacio
+Como apoyo al desarrollo se utilizarán herramientas de control de versiones, modelado, pruebas de API y registro de incidencias. La selección del lenguaje de programación, el framework y el sistema de gestión de bases de datos se justificará según su compatibilidad con las plataformas de pago, sus posibilidades de despliegue, su mantenimiento y los requisitos de seguridad de la solución.
+
+\vacio
+\tituloII{Conclusiones del capítulo.}
+
+El estudio de los fundamentos teóricos permite reconocer la importancia de las API, las pasarelas de pago y las notificaciones automáticas para gestionar microtransacciones en aplicaciones y sitios web. Su articulación constituye una base para diseñar una solución que comunique el resultado de los pagos y facilite la entrega de los productos o servicios correspondientes.
+
+El análisis de soluciones homólogas proporciona referentes para la integración y gestión de pagos. No obstante, las características de las soluciones internacionales no pueden trasladarse directamente al contexto cubano sin considerar las capacidades y condiciones de acceso de las plataformas nacionales.
+
+La caracterización inicial del contexto permite situar la investigación, pero requiere profundizar en los procesos de cobro de los desarrolladores y emprendimientos a los que se dirige la propuesta. Por ello, será necesario complementar el diagnóstico con evidencias que permitan precisar sus dificultades y necesidades.
+
+Finalmente, el enfoque iterativo e incremental y los métodos y técnicas seleccionados permitirán relacionar el estudio del problema con el diseño y la evaluación del sistema. Estos elementos orientarán la definición de las necesidades, los requisitos y la arquitectura que se abordarán en el capítulo siguiente.
+
+% =====================================================================
+%  Sección 6 — Capítulo II
+% =====================================================================
+\seccion{73.6bp}{5.4bp}{87.54bp}{28.72bp}{11.25bp}
+\renewcommand\textoEncabezado{Capítulo II}
+\doceUnoCinco
+
+\tituloI{Capítulo II: Necesidades del cliente, propuesta de solución técnica}
+
+En este capítulo se presenta el diseño de la solución a partir de los referentes teóricos, las soluciones homólogas y el diagnóstico organizacional expuestos en el Capítulo I. Primero se identifican y analizan las necesidades del cliente, tomando como punto de partida las dificultades que enfrentan los desarrolladores cubanos para cobrar por sus productos y servicios. Después se describe la propuesta de solución técnica, que adapta al contexto nacional las buenas prácticas de las soluciones homólogas, en particular la integración mediante una interfaz común, la generación de enlaces de pago y la notificación automática de los resultados. Seguidamente se especifican los requisitos funcionales y no funcionales que debe cumplir el sistema y, por último, se expone el diseño de la arquitectura que los sustenta, junto con las decisiones adoptadas para definirla.
+
+\vacio
+\tituloII{2.1 Necesidades del cliente.}
+
+% Este epígrafe se dedica a la identificación, descripción y análisis de las necesidades del cliente, precisando sus expectativas, restricciones y prioridades, así como su relación con el problema de investigación y con las insuficiencias identificadas en el diagnóstico organizacional.
+
+Los desarrolladores de aplicaciones y sistemas web cubanos deben solicitar el acceso a las pasarelas de pago nacionales por medio de los formularios de registro oficiales, que en algunos casos tardan semanas en responder a las solicitudes debido a procesos burocráticos que entorpecen su flujo de trabajo. Además, al momento de la implementación deben adaptar su sistema al funcionamiento de ambas plataformas, lo cual puede suponer demoras en los tiempos de desarrollo.
+
+\vacio
+
+Los desarrolladores de software cubanos necesitan un sistema mediante el cual puedan cobrar por sus productos y servicios, sin necesidad de largas esperas ni implementaciones demasiado complejas.
+
+\vacio
+\tituloII{2.2 Propuesta de solución técnica.}
+
+%Este epígrafe se dedica a la descripción de la propuesta de solución técnica, precisando su alcance, componentes, tecnologías seleccionadas y relación con las necesidades del cliente y con el problema de investigación.
+
+Para responder a la necesidad descrita en el epígrafe anterior, se propone el desarrollo de un sistema web que permita a los desarrolladores de software cubanos incorporar microtransacciones en sus aplicaciones y sitios web sin tener que integrarse por separado con cada plataforma de pago nacional. El sistema actúa como una capa intermedia: la aplicación del desarrollador se comunica únicamente con una interfaz común, y el sistema se encarga de gestionar la operación con la plataforma de pago correspondiente y de informar el resultado a la aplicación.
+
+\vacio
+Mediante el sistema, el desarrollador podrá:
+\begin{itemize}[parsep=5.7bp]
+  \item Darse de alta y gestionar su cuenta.
+  \item Registrar sus aplicaciones y obtener las credenciales para comunicarse con la API.
+  \item Registrar la cuenta bancaria de la persona natural, del trabajador por cuenta propia (TCP) o de la empresa que recibirá los pagos.
+  \item Registrar sus productos y servicios, con su descripción y precio.
+  \item Consultar el historial de los pagos realizados por cada producto o servicio.
+  \item Configurar los webhooks mediante los cuales sus aplicaciones serán notificadas de las compras realizadas.
+\end{itemize}
+
+\vacio
+El flujo de cobro propuesto se desarrolla en cuatro pasos. Primero, la aplicación del desarrollador solicita al sistema, mediante su API, un enlace de pago para un producto o servicio previamente registrado. Segundo, el cliente final accede a dicho enlace y realiza el pago a través de la plataforma nacional correspondiente. Tercero, el sistema confirma el resultado de la operación a partir de la información validada de la plataforma y actualiza su estado. Por último, el sistema notifica el resultado a la aplicación mediante un webhook, de modo que esta pueda entregar el producto o servicio. Con este flujo se eliminan la comunicación manual con el proveedor y el envío de datos bancarios a un desconocido, dificultades identificadas en el diagnóstico organizacional.
+
+\vacio
+Dada la criticidad de un sistema que gestiona operaciones de pago, su desarrollo debe apoyarse en tecnologías seguras, eficientes y de probada madurez en el mercado. Con este criterio se seleccionaron las siguientes tecnologías:
+
+\begin{itemize}[parsep=5.7bp]
+  \item \textbf{Next.js:} framework de desarrollo web basado en React que permite construir en un mismo proyecto la interfaz de usuario y la API del sistema, lo que simplifica el desarrollo, el despliegue y el mantenimiento de la solución.
+  \item \textbf{PostgreSQL:} sistema de gestión de bases de datos relacional de código abierto, reconocido por su fiabilidad y por sus garantías de integridad y consistencia mediante transacciones, características fundamentales para el registro de pagos.
+  \item \textbf{Prisma ORM:} herramienta de mapeo objeto-relacional que facilita el acceso a la base de datos mediante consultas tipadas, reduce los errores en el manejo de los datos y gestiona la evolución del esquema mediante migraciones.
+  \item \textbf{Zod:} biblioteca de validación de esquemas que permite verificar la estructura y el contenido de los datos recibidos por la API y por los webhooks antes de procesarlos, lo que contribuye a la seguridad del sistema.
+  \item \textbf{MinIO:} servicio de almacenamiento de objetos de código abierto, compatible con la API de Amazon S3, que se empleará para guardar los archivos asociados al sistema, como las imágenes de los productos y servicios, y que puede desplegarse en infraestructura propia.
+\end{itemize}
+
+\vacio
+Estas tecnologías son compatibles entre sí, cuentan con documentación amplia y una comunidad activa, y su uso conjunto en un único lenguaje, TypeScript, reduce la complejidad del desarrollo. La solución propuesta responde así a la necesidad de los desarrolladores de cobrar por sus productos y servicios de forma ágil, y constituye la base para la especificación de requisitos y el diseño de la arquitectura que se presentan a continuación.
+
+\vacio
+\tituloII{2.3 Especificación formal de requisitos funcionales y no funcionales.}
+
+Este epígrafe consta de la especificación formal de los requisitos funcionales y no funcionales resultantes de la Ingeniería de Requisitos desarrollada, incluyendo su identificación, descripción, priorización y trazabilidad con las necesidades del cliente y con la propuesta de solución técnica.
+
+\vacio
+\tituloII{2.4 Diseño de la arquitectura.}
+
+Este epígrafe presenta el diseño de la arquitectura de la solución propuesta, incluyendo la descripción de los componentes, sus interrelaciones, los patrones de diseño empleados y los diagramas correspondientes, así como la justificación de las decisiones arquitectónicas adoptadas.
+
+\vacio
+\tituloII{Conclusiones del capítulo.}
+
+Las conclusiones se orientan a establecer los argumentos que respaldan la posición científica que adopta el autor a partir de la aplicación del enfoque, metodología y métodos de Ingeniería de Software aplicados para lograr cumplir el objetivo, resolver el problema científico planteado y obtener un resultado práctico, destacando la pertinencia de las decisiones tomadas a lo largo del proceso de desarrollo de software descrito, en particular las referidas a las necesidades del cliente, la propuesta de solución técnica, la especificación formal de requisitos y el diseño de la arquitectura.
+
+\vacio
+\vacio
+\vacio
+
+% =====================================================================
+%  Sección 7 — Capítulo III
+% =====================================================================
+\seccion{70.75bp}{2.55bp}{87.54bp}{28.72bp}{11.25bp}
+\renewcommand\textoEncabezado{Capítulo III}
+\doceUnoCinco
+
+\tituloI{Capítulo III (opcional): Diseño de base de datos, prototipos funcionales de interfaz, codificación}
+
+El presente capítulo tiene como objetivo presentar el diseño de la base de datos, los prototipos funcionales de interfaz y la codificación de la solución propuesta. A lo largo de su desarrollo se abordan los principales contenidos siguientes: el diseño de la base de datos que sustenta el almacenamiento y la integridad de la información; el diseño de los prototipos funcionales de interfaz que materializan la interacción con el usuario; y la codificación de la solución, incluyendo los componentes, los estándares de codificación y el código generado. El capítulo se estructura en epígrafes que permiten al lector transitar desde el diseño de los datos y las interfaces hasta la implementación concreta de la solución, culminando con las conclusiones que sintetizan la pertinencia de las decisiones adoptadas. Como texto introductorio, se anticipa que estos elementos son consecuencia directa de las necesidades del cliente, la propuesta de solución técnica, la especificación formal de requisitos y el diseño de la arquitectura desarrollados en el Capítulo II.
+
+\vacio
+\tituloII{3.1 Diseño de la base de datos.}
+
+Este epígrafe presenta el diseño de la base de datos de la solución propuesta, incluyendo el modelo de datos, las entidades y relaciones, las restricciones de integridad, la normalización, los mecanismos de almacenamiento y seguridad, así como los diagramas correspondientes y la justificación de las decisiones adoptadas.
+
+\vacio
+\tituloII{3.2 Prototipos funcionales de interfaz.}
+
+Este epígrafe presenta el diseño de los prototipos funcionales de interfaz de la solución propuesta, incluyendo la descripción de las pantallas, la navegación, la usabilidad y la experiencia de usuario, así como los diagramas y esquemas correspondientes que materializan la interacción con el usuario.
+
+\vacio
+\tituloII{3.3 Codificación.}
+
+Este epígrafe presenta el diseño de los componentes y la descripción de los estándares de codificación empleados. Se representa el código generado y la solución obtenida, precisando la correspondencia entre los componentes implementados, los requisitos especificados y la arquitectura diseñada.
+
+\vacio
+\tituloII{Conclusiones del capítulo.}
+
+Las conclusiones se orientan a establecer los argumentos que respaldan la posición científica que adopta el autor a partir de la aplicación del enfoque, metodología y métodos de Ingeniería de Software aplicados para lograr cumplir el objetivo, resolver el problema científico planteado y obtener un resultado práctico, destacando la pertinencia de las decisiones tomadas en el diseño de la base de datos, los prototipos funcionales de interfaz y la codificación de la solución propuesta.
+
+\vacio
+\vacio
+\vacio
+
+% =====================================================================
+%  Sección 8 — Conclusiones
+%  (el margen superior de Word, 2,40 cm, queda por debajo del encabezado;
+%   el texto empieza justo después de este, como hace Word)
+% =====================================================================
+\seccion{68.2bp}{0bp}{87.54bp}{28.72bp}{11.25bp}
+\renewcommand\textoEncabezado{Conclusiones finales}
+\doceUnoCinco
+
+\tituloI{Conclusiones}
+
+<Las conclusiones, por lo general van dirigidas a establecer los argumentos y resultados a los que se arribó en los siguientes aspectos: (1) sistematización del estado del arte referido al objeto de estudio y el campo de acción, (2) diagnóstico del estado actual del objeto de estudio, (3) principales aspectos del análisis, diseño e implementación de la solución, (4) principales resultados de la validación de la solución propuesta. Deben apoyarse en los resultados obtenidos y descritos en la memoria y no en datos que no aparezcan en este documento. No pueden exceder una cuartilla en su extensión>
+
+\vacio
+\vacio
+\vacio
+
+% =====================================================================
+%  Sección 9 — Recomendaciones
+% =====================================================================
+\seccion{68.2bp}{0bp}{87.54bp}{28.72bp}{11.25bp}
+\renewcommand\textoEncabezado{Recomendaciones}
+\doceUnoCinco
+
+\tituloI{Recomendaciones}
+
+<Las recomendaciones, por lo general, van dirigidas a establecer aquellos aspectos en los cuales la investigación puede continuar para su perfeccionamiento, mantenimiento o evolución en el tiempo. No deben constituir acciones no realizadas por omisión de etapas del proceso investigativo o ingenieril; ni ser demasiadas en número que cuestionen la completitud y pertinencia de la investigación realizada. No pueden exceder una cuartilla en su extensión>
+
+\vacio
+\vacio
+\vacio
+
+% =====================================================================
+%  Sección 10 — Referencias bibliográficas (Arial 11)
+% =====================================================================
+\seccion{85bp}{16.8bp}{87.54bp}{28.72bp}{10.31bp}
+\renewcommand\textoEncabezado{Referencias bibliográficas}
+\doceUnoCinco
+
+\tituloI{Referencias Bibliográficas}
+
+{\onceUnoQuince
+<Listado de las referencias bibliográficas con igual tipo de fuente Arial, pero a tamaño 11 puntos e interlineado 1.15 puntos. En las referencias sólo se incluyen los trabajos citados explícitamente en el texto. Evite el uso de fuentes no confiables (Ilustrados.com; Wikipedia; aulafacil.com; monografías.com; sitios web no arbitrados o institucionales; publicaciones sin ISSN o ISBN o toda fuente que no sea posible localizar o cuyos datos de recuperación no sean posible de obtener). \uline{Toda la bibliografía usada debe estar acotada en el cuerpo del documento} siguiendo las pautas de la norma ISO 690-2 de la forma (Apellido, año) ej. (Jiménez, 2010)\par}
+\onceSencillo
+La bibliografía debe ser actualizada, representativa del área de conocimiento analizada, de fuentes de reconocida calidad; así como escritas y referenciadas utilizando alguna de las normas internacionalmente reconocidas. La calidad se mide en la \textbf{actualidad, fuentes de referencias y representatividad del objeto de estudio}. Se recomienda que al menos el \textbf{70\% de las fuentes se publicaron en los últimos 5 años}. Como norma sugerida pueden utilizar la ISO 690 -2.
+
+\vacio
+\vacio
+\textbf{Ejemplos:}\\
+\textbf{\uline{Artículo de revista:}}
+
+AUTOR (es). Título del artículo. Título de la revista, año, volumen (número de la publicación): página inicial-página final. Dirección DOI
+
+\textbf{Ejemplo:}\\
+- CULNAN, M. An analysis of the information usage patterns of academics and practitioners in computer field: A citation analysis of a national conference proceedings. Information Processing and Management, 1978, 14 (6): p. 395-404. DOI: http://dx.doi.org/10.1007/s10115-003-0128-3
+
+\mbox{}\\
+\textbf{\uline{Libro:}}\\
+AUTOR (es). Título. Ciudad, editorial, año. Número de páginas.
+
+\mbox{}\\
+\textbf{Ejemplo:}\\
+- SHACKELFORD, R.; CROSS, J. H., et al. Computing Curricula 2005: The Overview Report. ACM/IEEE Computer Society, 2005. 62 p.
+
+\mbox{}\\
+\textbf{\uline{Partes de libros:}}
+
+AUTOR (es). Título sección. En: Nombre editor. Título libro. Ciudad: Editorial, Año. Volumen, Páginas.\\
+\textbf{Ejemplo:}\\
+- MAHONEY, M. S. What Was the Question? The Origins of the Theory of Computation. En: Akera, A. y Aspray, W. (editores). Using History to Teach Computer Science and Related Disciplines. Washington, D.C.: Computer Research Association, 2004, p. 225-232.
+
+\mbox{}\\
+\textbf{\uline{Tesis:}}
+
+AUTOR (es). Título. Clase de tesis, Institución, Ciudad, Año.
+
+\textbf{Ejemplo:}\\
+- DODIG-CRNKOVIC, G. Computer science in a theory of science discourse. Master Thesis in Computer Science. Department of Computer Science. Mälardalen University, 2002.
+
+\mbox{}\\
+\textbf{\uline{Ponencia de Congreso:}}
+
+AUTOR (es). Título del artículo. En: Nombre del evento. Nombre de las Memorias. Lugar de publicación: editor, año, páginas.
+
+\textbf{Ejemplo:}\\
+- STEVENSON, D. E. Science, computational science, and computer science: at a crossroads. En: Proceedings of the 1993 ACM conference on Computer science. ACM Conference on Computer science. Indianapolis: ACM, 1993, p. 7-14. DOI: http://dx.doi.org/10.1007/s10115-003-0128-3
+
+\mbox{}\\
+\textbf{\uline{Fuente electrónica:}}
+
+AUTOR (es). Título del artículo. [Tipo de soporte] Título de la publicación electrónica, año. [Fecha de consulta]. Disponible en: [URL].
+
+\textbf{Ejemplo:}\\
+- YUAN, A.; JEANNETTE, J., et al. Characterizing and Mining the Citation Graph of the Computer Science Literature. [En línea]. Knowledge and Information Systems. 2004, vol. 6, [Consultado el: 12 de enero de 2010] 664-678 p. Disponible en: http://dx.doi.org/10.1007/s10115-003-0128-3
+
+% =====================================================================
+%  Sección 11 — Anexos (Arial 11, interlineado sencillo)
+% =====================================================================
+\seccion{70.75bp}{2.55bp}{87.59bp}{28.77bp}{10.31bp}
+\renewcommand\textoEncabezado{Anexos}
+\doceUnoCinco
+
+\tituloI[36bp]{Anexos}
+
+\onceSencillo
+<Contenido de los anexos con igual tipo de fuente Arial, pero a tamaño 11 puntos e interlineado 1.0 puntos. Debe tratar de sólo utilizarse aquellos anexos imprescindibles para complementar lo presentado en la memoria escrita y que no excedan las ocho (8) o diez (10 páginas). Deben aparecer uno a continuación del otro sin necesidad de saltos de página entre estos>
+
+{\doceSencillo\vacio}
+
+\end{document}
