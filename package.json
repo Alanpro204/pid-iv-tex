@@ -1,0 +1,13 @@
+{
+  "name": "pid-iv-tex",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "diagramas": "node diagramas/compilar.mjs"
+  },
+  "dependencies": {
+    "@excalidraw/utils": "^0.1.8",
+    "@resvg/resvg-js": "^2.6.2",
+    "jsdom": "^31.0.1"
+  }
+}

@@ -145,6 +145,25 @@
   \vspace{\dimexpr5.65bp-\parskip\relax}}
 
 % ---------------------------------------------------------------------
+%  Diagramas (Excalidraw)
+% ---------------------------------------------------------------------
+%  \diagrama{nombre}{Título de la figura}
+%  Inserta diagramas/dist/nombre.png, generado a partir de
+%  diagramas/nombre.excalidraw con npm run diagramas. Al editar el diagrama y
+%  volver a ejecutar el script, el documento se actualiza solo.
+\newcounter{figuradiagrama}
+\newcommand\diagrama[2]{%
+  \par\addvspace{6bp}%
+  \refstepcounter{figuradiagrama}\label{fig:#1}%
+  \begingroup\centering
+  \includegraphics[width=\linewidth,height=0.55\textheight,keepaspectratio]%
+    {diagramas/dist/#1.png}\par
+  \nopagebreak\vspace{4bp}%
+  {\onceSencillo\textbf{Figura \thefiguradiagrama.} #2\par}%
+  \endgroup
+  \addvspace{6bp}}
+
+% ---------------------------------------------------------------------
 %  Índice (estilos "TDC 1" y "TDC 2" de Word)
 % ---------------------------------------------------------------------
 %  TDC 1: Arial 11 mayúsculas, 1,5, tabulación derecha con puntos a
@@ -496,13 +515,13 @@ Mediante el sistema, el desarrollador podrá:
 \begin{itemize}[parsep=5.7bp]
   \item Darse de alta y gestionar su cuenta.
   \item Registrar sus aplicaciones y obtener las credenciales para comunicarse con la API.
-  \item Registrar la cuenta bancaria de la persona natural, del trabajador por cuenta propia (TCP) o de la empresa que recibirá los pagos.
+  \item Registrar la cuenta bancaria del trabajador por cuenta propia (TCP) o de la empresa que recibirá los pagos.
   \item Registrar sus productos y servicios, con su descripción y precio.
   \item Consultar el historial de los pagos realizados por cada producto o servicio.
   \item Configurar los webhooks mediante los cuales sus aplicaciones serán notificadas de las compras realizadas.
 \end{itemize}
 
-\vacio
+\vacio  
 El flujo de cobro propuesto se desarrolla en cuatro pasos. Primero, la aplicación del desarrollador solicita al sistema, mediante su API, un enlace de pago para un producto o servicio previamente registrado. Segundo, el cliente final accede a dicho enlace y realiza el pago a través de la plataforma nacional correspondiente. Tercero, el sistema confirma el resultado de la operación a partir de la información validada de la plataforma y actualiza su estado. Por último, el sistema notifica el resultado a la aplicación mediante un webhook, de modo que esta pueda entregar el producto o servicio. Con este flujo se eliminan la comunicación manual con el proveedor y el envío de datos bancarios a un desconocido, dificultades identificadas en el diagnóstico organizacional.
 
 \vacio
@@ -528,6 +547,12 @@ Este epígrafe consta de la especificación formal de los requisitos funcionales
 \tituloII{2.4 Diseño de la arquitectura.}
 
 Este epígrafe presenta el diseño de la arquitectura de la solución propuesta, incluyendo la descripción de los componentes, sus interrelaciones, los patrones de diseño empleados y los diagramas correspondientes, así como la justificación de las decisiones arquitectónicas adoptadas.
+
+\vacio
+Para estructurar el sistema se adopta el patrón arquitectónico Modelo-Vista-Controlador (MVC), que separa la interfaz de usuario, la lógica de control y la lógica de negocio con su acceso a los datos. Esta separación facilita el mantenimiento y las pruebas del sistema, y permite que cambios en una capa afecten lo mínimo posible a las demás. La Figura~\ref{fig:mvc-paquetes} muestra el diagrama de paquetes resultante.
+
+\vacio
+\diagrama{mvc-paquetes}{Diagrama de paquetes de la arquitectura MVC del sistema.}
 
 \vacio
 \tituloII{Conclusiones del capítulo.}
