@@ -1,0 +1,49 @@
+Número;Nombre;Actor;Descripción;Prioridad
+RF#1;Registrarse en el sistema;Desarrollador;Permite a una persona crear una cuenta de desarrollador proporcionando los datos requeridos, que el sistema valida antes de activar la cuenta.;Alta
+RF#2;Iniciar sesión en el sistema;Desarrollador;Permite al desarrollador autenticarse con sus credenciales para acceder a las funcionalidades del sistema.;Alta
+RF#3;Restablecer contraseña;Desarrollador;Permite al desarrollador que olvidó su contraseña establecer una nueva mediante un mecanismo de verificación de su identidad.;Media
+RF#4;Cerrar sesión;Desarrollador;Permite al desarrollador finalizar su sesión activa de forma segura.;Alta
+RF#5;Consultar información de la cuenta;Desarrollador;Muestra al desarrollador los datos asociados a su cuenta.;Media
+RF#6;Cambiar contraseña;Desarrollador;Permite al desarrollador autenticado sustituir su contraseña actual por una nueva.;Media
+RF#7;Listar aplicaciones propias;Desarrollador;Muestra el listado de las aplicaciones registradas por el desarrollador.;Alta
+RF#8;Ver detalles de una aplicación;Desarrollador;Muestra la información de una aplicación propia, incluida su configuración de webhook.;Alta
+RF#9;Registrar aplicación;Desarrollador;Permite registrar una nueva aplicación o sitio web desde el cual se comercializarán productos o servicios.;Alta
+RF#10;Modificar aplicación propia;Desarrollador;Permite actualizar los datos de una aplicación registrada por el desarrollador.;Media
+RF#11;Generar credenciales de API;Desarrollador;Permite generar las credenciales con las que una aplicación se autentica ante la API del sistema, así como regenerarlas en caso necesario.;Alta
+RF#12;Configurar webhook de una aplicación;Desarrollador;Permite definir la dirección a la que el sistema enviará las notificaciones de resultado de pago de la aplicación.;Alta
+RF#13;Eliminar aplicación propia;Desarrollador;Permite eliminar una aplicación registrada por el desarrollador, con confirmación previa.;Baja
+RF#14;Listar productos de una aplicación propia;Desarrollador;Muestra el listado de los productos y servicios registrados en una aplicación del desarrollador.;Alta
+RF#15;Ver detalles de un producto;Desarrollador;Muestra la información de un producto o servicio, incluidos su precio y estado.;Alta
+RF#16;Registrar producto en una aplicación propia;Desarrollador;Permite registrar un producto o servicio con su nombre, descripción y precio en una aplicación del desarrollador.;Alta
+RF#17;Modificar producto en una aplicación propia;Desarrollador;Permite actualizar los datos de un producto o servicio registrado.;Media
+RF#18;Activar o desactivar un producto;Desarrollador;Permite habilitar o inhabilitar la venta de un producto sin eliminarlo, de modo que no puedan generarse nuevos enlaces de pago para él.;Media
+RF#19;Eliminar producto en una aplicación propia;Desarrollador;Permite eliminar un producto o servicio registrado, con confirmación previa y conservando el historial de sus pagos.;Baja
+RF#20;Añadir cuenta bancaria;Desarrollador;Permite registrar la cuenta bancaria de la persona natural, el trabajador por cuenta propia o la empresa que recibirá los pagos.;Alta
+RF#21;Listar cuentas bancarias;Desarrollador;Muestra el listado de las cuentas bancarias registradas por el desarrollador.;Media
+RF#22;Modificar una cuenta bancaria;Desarrollador;Permite actualizar los datos de una cuenta bancaria registrada.;Media
+RF#23;Eliminar una cuenta bancaria;Desarrollador;Permite eliminar una cuenta bancaria registrada que no esté asociada a ninguna aplicación o producto.;Baja
+RF#24;Asociar cuenta bancaria a una aplicación o producto;Desarrollador;Permite indicar la cuenta bancaria en la que se recibirán los pagos de una aplicación o de un producto.;Alta
+RF#25;Generar enlace de pago;Desarrollador;Permite generar desde el sistema un enlace de pago para un producto activo.;Alta
+RF#26;Listar enlaces de pago de una aplicación;Desarrollador;Muestra los enlaces de pago generados para una aplicación, con su estado.;Media
+RF#27;Listar enlaces de pago de un producto;Desarrollador;Muestra los enlaces de pago generados para un producto, con su estado.;Media
+RF#28;Consultar detalles de un enlace de pago;Desarrollador;Muestra la información de un enlace de pago, incluido el historial de cambios de su estado.;Media
+RF#29;Mostrar página de pago;Cliente final;Presenta al cliente final, sin necesidad de registrarse, el producto, el monto y los métodos de pago disponibles.;Alta
+RF#30;Seleccionar plataforma de pago y redirigir;Cliente final;Permite al cliente final elegir la plataforma de pago nacional y lo redirige a ella para completar la operación.;Alta
+RF#31;Modificar estado de un enlace de pago;Desarrollador;Permite cancelar un enlace de pago pendiente o cambiar otros estados permitidos, según las reglas del sistema.;Media
+RF#32;Notificar resultado del pago mediante webhook;Sistema;Envía a la dirección de webhook de la aplicación el resultado del pago una vez confirmado, con mecanismos de autenticidad, reintento y procesamiento sin duplicados.;Alta
+RF#33;Generar enlace de pago vía API;Aplicación del desarrollador;Permite a la aplicación solicitar un enlace de pago para un producto registrado, autenticándose con sus credenciales de API.;Alta
+RF#34;Consultar estado de una transacción vía API;Aplicación del desarrollador;Permite a la aplicación consultar el estado actual de una transacción, autenticándose con sus credenciales de API.;Alta
+RF#35;Mostrar ingresos totales;Desarrollador;Muestra el monto total recibido por el desarrollador mediante pagos confirmados.;Baja
+RF#36;Mostrar ingresos por períodos;Desarrollador;Muestra los ingresos del desarrollador agrupados por el período de tiempo seleccionado.;Baja
+RF#37;Mostrar cantidad de transacciones por estado;Desarrollador;Muestra el número de transacciones del desarrollador agrupadas por su estado.;Baja
+RF#38;Mostrar productos más vendidos;Desarrollador;Muestra los productos del desarrollador con mayor número de ventas.;Baja
+RF#39;Listar usuarios activos;Administrador;Muestra el listado de los usuarios activos del sistema.;Media
+RF#40;Ver detalles de usuarios activos;Administrador;Muestra la información de un usuario activo, incluidas sus aplicaciones registradas.;Media
+RF#41;Suspender usuarios activos;Administrador;Permite suspender a un usuario, impidiendo su acceso y la generación de nuevos enlaces de pago.;Media
+RF#42;Consultar estadísticas globales;Administrador;Muestra indicadores generales del sistema, como el número de usuarios, aplicaciones y transacciones, y el volumen de pagos.;Baja
+RF#43;Listar aplicaciones registradas;Administrador;Muestra el listado de todas las aplicaciones registradas en el sistema.;Media
+RF#44;Ver detalles de aplicaciones registradas;Administrador;Muestra la información de una aplicación registrada y de su propietario.;Media
+RF#45;Suspender aplicaciones registradas;Administrador;Permite suspender una aplicación, impidiendo que genere nuevos enlaces de pago.;Media
+RF#46;Listar productos registrados;Administrador;Muestra el listado de todos los productos registrados en el sistema.;Baja
+RF#47;Ver detalles de productos registrados;Administrador;Muestra la información de un producto registrado y de la aplicación a la que pertenece.;Baja
+RF#48;Suspender productos registrados;Administrador;Permite suspender un producto, impidiendo la generación de nuevos enlaces de pago para él.;Media

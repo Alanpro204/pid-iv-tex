@@ -38,6 +38,9 @@
 \usepackage[spanish,es-noshorthands,es-lcroman,es-nodecimaldot]{babel}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage{longtable}
+\usepackage{csvsimple-l3}
 \usepackage[normalem]{ulem}
 \usepackage{fancyhdr}
 \usepackage{enumitem}
@@ -162,6 +165,62 @@
   {\onceSencillo\textbf{Figura \thefiguradiagrama.} #2\par}%
   \endgroup
   \addvspace{6bp}}
+
+% ---------------------------------------------------------------------
+%  Tablas (CSV)
+% ---------------------------------------------------------------------
+%  \tabla{nombre}{Título de la tabla}{anchos de columna separados por comas}
+%  Inserta la tabla definida en tables/nombre.csv: separador ";", la primera
+%  fila es el encabezado y el resto son los datos. Los anchos son una dimensión
+%  por columna, p. ej. {1.4cm,3.4cm,2.3cm,6.8cm,1.5cm}. La tabla se numera
+%  ("Tabla N.") y puede citarse con \ref{tab:nombre}. Evitar en las celdas los
+%  caracteres especiales de LaTeX (% & _ \ $) y el punto y coma.
+\newcounter{tablacsv}
+\ExplSyntaxOn
+\tl_new:N \l__tabla_preamble_tl
+\seq_new:N \l__tabla_head_seq
+\cs_new_protected:Npn \__tabla_headrow:
+  {
+    \seq_set_map:NNn \l__tabla_head_seq \g__csvsim_line_seq { \textbf{##1} }
+    \seq_use:Nn \l__tabla_head_seq { & }
+  }
+\cs_new_protected:Npn \__tabla_read:nn #1#2
+  {
+    \csvreader
+      [
+        separator = semicolon,
+        respect~sharp,
+        head,
+        column~names~detection = false,
+        after~head =
+          {
+            \begin{longtable}{#1}
+            \hline \rowcolor{gray!25} \__tabla_headrow: \\ \hline \endfirsthead
+            \hline \rowcolor{gray!25} \__tabla_headrow: \\ \hline \endhead
+            \hline \endfoot
+          },
+        late~after~line = { \\ \hline },
+        late~after~last~line = { \end{longtable} },
+      ]
+      {tables/#2.csv}{}{\csvlinetotablerow}
+  }
+\cs_generate_variant:Nn \__tabla_read:nn { V }
+\NewDocumentCommand\tabla{m m m}
+  {
+    \tl_set:Nn \l__tabla_preamble_tl { | }
+    \clist_map_inline:nn {#3}
+      { \tl_put_right:Nn \l__tabla_preamble_tl { >{\raggedright\arraybackslash}p{##1} | } }
+    \par\addvspace{6bp}
+    \refstepcounter{tablacsv}\label{tab:#1}
+    {\onceSencillo\textbf{Tabla~\thetablacsv.}~#2\par}
+    \vspace{4bp}
+    \begingroup
+      \setlength{\tabcolsep}{3pt}\renewcommand{\arraystretch}{1.15}
+      \fontsize{10bp}{12bp}\selectfont\raggedright
+      \__tabla_read:Vn \l__tabla_preamble_tl {#1}
+    \endgroup
+  }
+\ExplSyntaxOff
 
 % ---------------------------------------------------------------------
 %  Índice (estilos "TDC 1" y "TDC 2" de Word)
@@ -542,6 +601,14 @@ Estas tecnologías son compatibles entre sí, cuentan con documentación amplia 
 \tituloII{2.3 Especificación formal de requisitos funcionales y no funcionales.}
 
 Este epígrafe consta de la especificación formal de los requisitos funcionales y no funcionales resultantes de la Ingeniería de Requisitos desarrollada, incluyendo su identificación, descripción, priorización y trazabilidad con las necesidades del cliente y con la propuesta de solución técnica.
+
+\vacio
+\textbf{2.3.1 Requisitos funcionales}
+
+A partir de las necesidades del cliente y de la propuesta de solución técnica, se identificaron los requisitos funcionales que debe cumplir el sistema. Se describen en la Tabla~\ref{tab:requisitos-funcionales} y se organizan según los actores que interactúan con él: el desarrollador, el administrador, el cliente final, la aplicación del desarrollador mediante la API y el propio sistema. La prioridad (Alta, Media o Baja) refleja la importancia del requisito para la primera versión del software.
+
+\vacio
+\tabla{requisitos-funcionales}{Requisitos funcionales del sistema.}{1.35cm,3.4cm,2.3cm,6.8cm,1.5cm}
 
 \vacio
 \tituloII{2.4 Diseño de la arquitectura.}
