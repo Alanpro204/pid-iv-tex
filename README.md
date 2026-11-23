@@ -126,7 +126,14 @@ Los diagramas se dibujan en [Excalidraw](https://excalidraw.com), se guardan en 
 % referencia: Figura~\ref{fig:mvc-paquetes}
 ```
 
-`package.json` define el script `npm run diagramas` para regenerar los PNG (dependencias: `@excalidraw/utils`, `@resvg/resvg-js` y `jsdom`). **Nota:** el script apunta a `diagramas/compilar.mjs`, que actualmente **no está en el repositorio**. Hasta que se añada, `diagramas/dist/mvc-paquetes.png` es el único PNG disponible y hay que exportarlo a mano desde Excalidraw si se modifica el diagrama.
+Para regenerar los PNG:
+
+```bash
+npm run diagramas                  # todos los .excalidraw
+npm run diagramas -- mvc-paquetes  # solo el indicado
+```
+
+`diagramas/compilar.mjs` genera un SVG con `@excalidraw/utils` (usando `jsdom` como DOM) y lo rasteriza con `@resvg/resvg-js` a 3150 px de ancho. Excalidraw usa la fuente Helvetica, que resvg sustituye por Arial del sistema.
 
 ---
 
@@ -155,6 +162,7 @@ El índice y las referencias cruzadas necesitan al menos dos pasadas, que `latex
 ├── tables/
 │   └── requisitos-funcionales.csv
 ├── diagramas/
+│   ├── compilar.mjs          # .excalidraw -> PNG (npm run diagramas)
 │   ├── mvc-paquetes.excalidraw
 │   └── dist/                 # PNG generados
 ├── imagenes/
