@@ -1,0 +1,5 @@
+Criterio;Stripe;Transfermóvil;EnZona
+Integración mediante API;Sí, mediante su API y sus herramientas para desarrolladores;Sí, en la modalidad de tienda virtual;Sí, mediante las API de la plataforma
+Enlaces de pago;Sí, permite crearlos y compartirlos;No consta en las fuentes consultadas. Debe confirmarse en la documentación oficial;No consta en las fuentes consultadas. Ofrece pasarela de pagos, códigos QR y Bulevar virtual
+Notificación del resultado mediante webhooks;Sí, con eventos enviados a un punto de acceso HTTPS;Debe confirmarse en la documentación oficial;Debe confirmarse en la documentación oficial
+Condiciones de acceso;Registro de una cuenta en línea. Su disponibilidad no se presupone para Cuba;Contratación digital en línea y habilitación por ETECSA o el GET;Registro del comercio en el Bulevar y suscripción a un plan con comisiones

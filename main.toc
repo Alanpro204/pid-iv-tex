@@ -1,23 +1,23 @@
 \babel@toc {spanish}{}\relax 
 \contentsline {section}{\MakeUppercase []{Introducción}}{1}{section*.1}%
-\contentsline {section}{\MakeUppercase []{Capítulo I: Marco teórico y diagnóstico}}{6}{section*.13}%
-\contentsline {subsection}{1.1 Fundamentos y referentes teórico-metodológicos sobre el objeto de estudio.}{6}{section*.14}%
+\contentsline {section}{\MakeUppercase []{Capítulo I: Marco teórico y diagnóstico}}{4}{section*.13}%
+\contentsline {subsection}{1.1 Fundamentos y referentes teórico-metodológicos sobre el objeto de estudio.}{4}{section*.14}%
 \contentsline {subsection}{1.2 Soluciones homólogas.}{8}{section*.15}%
-\contentsline {subsection}{1.3 Diagnóstico organizacional.}{11}{section*.16}%
-\contentsline {subsection}{1.4 Metodología, métodos y herramientas.}{11}{section*.17}%
-\contentsline {subsection}{Conclusiones del capítulo.}{13}{section*.18}%
-\contentsline {section}{\MakeUppercase []{Capítulo II: Necesidades del cliente, propuesta de solución técnica}}{14}{section*.19}%
-\contentsline {subsection}{2.1 Necesidades del cliente.}{14}{section*.20}%
-\contentsline {subsection}{2.2 Propuesta de solución técnica.}{14}{section*.21}%
-\contentsline {subsection}{2.3 Especificación formal de requisitos funcionales y no funcionales.}{16}{section*.22}%
-\contentsline {subsection}{2.4 Diseño de la arquitectura.}{20}{section*.24}%
-\contentsline {subsection}{Conclusiones del capítulo.}{21}{section*.26}%
-\contentsline {section}{\MakeUppercase []{Capítulo III (opcional): Diseño de base de datos, prototipos funcionales de interfaz, codificación}}{23}{section*.27}%
-\contentsline {subsection}{3.1 Diseño de la base de datos.}{23}{section*.28}%
-\contentsline {subsection}{3.2 Prototipos funcionales de interfaz.}{23}{section*.29}%
-\contentsline {subsection}{3.3 Codificación.}{24}{section*.30}%
-\contentsline {subsection}{Conclusiones del capítulo.}{24}{section*.31}%
-\contentsline {section}{\MakeUppercase []{Conclusiones}}{25}{section*.32}%
-\contentsline {section}{\MakeUppercase []{Recomendaciones}}{26}{section*.33}%
-\contentsline {section}{\MakeUppercase []{Referencias Bibliográficas}}{27}{section*.34}%
-\contentsline {section}{\MakeUppercase []{Anexos}}{29}{section*.35}%
+\contentsline {subsection}{1.3 Diagnóstico organizacional.}{11}{section*.17}%
+\contentsline {subsection}{1.4 Metodología y entorno de desarrollo.}{12}{section*.25}%
+\contentsline {subsection}{Conclusiones del capítulo.}{13}{section*.26}%
+\contentsline {section}{\MakeUppercase []{Capítulo II: Necesidades del cliente, propuesta de solución técnica}}{15}{section*.27}%
+\contentsline {subsection}{2.1 Necesidades del cliente.}{15}{section*.28}%
+\contentsline {subsection}{2.2 Propuesta de solución técnica.}{15}{section*.29}%
+\contentsline {subsection}{2.3 Especificación formal de requisitos funcionales y no funcionales.}{17}{section*.30}%
+\contentsline {subsection}{2.4 Diseño de la arquitectura.}{20}{section*.32}%
+\contentsline {subsection}{Conclusiones del capítulo.}{21}{section*.34}%
+\contentsline {section}{\MakeUppercase []{Capítulo III (opcional): Diseño de base de datos, prototipos funcionales de interfaz, codificación}}{23}{section*.35}%
+\contentsline {subsection}{3.1 Diseño de la base de datos.}{23}{section*.36}%
+\contentsline {subsection}{3.2 Prototipos funcionales de interfaz.}{23}{section*.37}%
+\contentsline {subsection}{3.3 Codificación.}{24}{section*.38}%
+\contentsline {subsection}{Conclusiones del capítulo.}{24}{section*.39}%
+\contentsline {section}{\MakeUppercase []{Conclusiones}}{25}{section*.40}%
+\contentsline {section}{\MakeUppercase []{Recomendaciones}}{26}{section*.41}%
+\contentsline {section}{\MakeUppercase []{Referencias Bibliográficas}}{27}{section*.42}%
+\contentsline {section}{\MakeUppercase []{Anexos}}{30}{section*.43}%

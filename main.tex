@@ -1,6 +1,6 @@
 % !TEX program = pdflatex
 % =====================================================================
-%  Informe técnico PID IV — Alain Torres Rodríguez
+%  Informe técnico PID IV — Alain
 %  Réplica en LaTeX del documento Word original.
 %  Compilar con LuaLaTeX o XeLaTeX (usa Arial y Times New Roman del sistema)
 %  o con pdfLaTeX (usa Helvetica, de métricas idénticas a Arial):
@@ -46,7 +46,7 @@
 \usepackage{enumitem}
 \usepackage[hidelinks,hypertexnames=false,bookmarksnumbered=false,
             pdftitle={Sistema de microtransacciones mediante plataformas de pago nacionales},
-            pdfauthor={Alain Torres Rodríguez},
+            pdfauthor={Alain},
             pdfsubject={Informe técnico. Proyecto Investigación y Desarrollo IV}]{hyperref}
 
 % ---------------------------------------------------------------------
@@ -238,6 +238,23 @@
 \newcommand\indiceGeneral{\@starttoc{toc}}
 \makeatother
 
+% ---------------------------------------------------------------------
+%  Referencias bibliográficas (Arial 11, interlineado 1,15)
+%  Se numeran por orden de primera cita: \cite{clave} -> [n]
+% ---------------------------------------------------------------------
+\urlstyle{same}
+\makeatletter
+\g@addto@macro\UrlBreaks{\do\-\do\_\do\=}
+\newenvironment{referencias}{%
+  \list{\@biblabel{\@arabic\c@enumiv}}{%
+    \settowidth\labelwidth{[99]}%
+    \leftmargin\labelwidth \advance\leftmargin\labelsep
+    \itemsep=4bp \parsep=0pt \topsep=0pt \partopsep=0pt
+    \usecounter{enumiv}\let\p@enumiv\@empty
+    \renewcommand\theenumiv{\@arabic\c@enumiv}}%
+  \onceUnoQuince \sloppy}{\endlist}
+\makeatother
+
 % Listas numeradas de Word: número a 0,63 cm, texto a 1,27 cm
 \setlist[enumerate]{label=\arabic*.,leftmargin=36bp,labelwidth=18bp,
                     labelsep=0pt,align=left,topsep=0pt,partopsep=0pt,
@@ -269,7 +286,7 @@ ASIGNATURA: PROYECTO INVESTIGACIÓN Y DESARROLLO IV\par
 DISCIPLINA: PRÁCTICA PROFESIONAL\par}
 {\timesnr\doceSencillo\vacio\vacio}
 \vacio\vacio\vacio
-\textbf{Autor:} Alain Torres Rodríguez\par
+\textbf{Autor:} Alain\par
 \textbf{Tutor(es):} MsC. Yadira Ramírez Rodríguez\par
 \vacio\vacio
 \ La Habana, Octubre de 2026\par
@@ -290,19 +307,20 @@ Año del centenario del comandante en jefe Fidel Castro Ruz\par
 % Word no suma el espacio posterior de un párrafo y el anterior del
 % siguiente: usa el mayor de los dos (11,35 pt).
 {\setlength{\parskip}{11.35bp}
-En los últimos años, el mercado de aplicaciones móviles en Cuba ha experimentado un crecimiento impulsado por plataformas como Apklis, que desde 2018 permite a los desarrolladores publicar y comercializar sus aplicaciones. De igual manera, se ha fortalecido el desarrollo de sitios y aplicaciones web gracias a servicios de alojamiento como Espacio 3W y al alquiler de servidores privados virtuales ofrecidos por ETECSA. Sin embargo, muchas operaciones comerciales continúan realizándose a través de aplicaciones de mensajería externas, como WhatsApp, Telegram o Messenger, donde los pagos se acuerdan mediante Transfermóvil, EnZona o efectivo contra entrega. Este proceso suele implicar el uso de cuentas personales no vinculadas formalmente a una entidad comercial ni a un Trabajo Por Cuenta Propia (TCP), lo que reduce la confianza del cliente y dificulta la consolidación del comercio digital.
+Los desarrolladores de aplicaciones y sitios web en Cuba encuentran dificultades para incorporar cobros en línea mediante las plataformas de pago nacionales, Transfermóvil y EnZona: trámites de contratación prolongados, documentación limitada y la necesidad de realizar una integración diferente con cada una. Como consecuencia, muchas ventas se gestionan mediante aplicaciones de mensajería, con pagos a cuentas personales que reducen la confianza del cliente y dificultan el comercio digital.
 
-El presente trabajo propone un sistema que permita a los desarrolladores registrar productos, generar enlaces de pago y recibir notificaciones sobre la confirmación de las transacciones, con el fin de entregar automáticamente el producto o recompensa correspondiente. Con ello se busca reducir la dependencia de canales externos de comunicación, mejorar la seguridad de las transacciones y facilitar la gestión comercial dentro de aplicaciones móviles nacionales. La implementación de este tipo de soluciones podría contribuir a dinamizar el mercado de videojuegos, comercios electrónicos y aplicaciones móviles en Cuba, además de promover el uso de medios de pago digitales y fortalecer la confianza en las transacciones realizadas con moneda nacional.
+El objetivo de este trabajo es desarrollar un sistema web que permita a los desarrolladores cobrar microtransacciones desde sus aplicaciones y sitios web mediante una única interfaz de programación, que gestione la operación con la plataforma de pago nacional y comunique el resultado a la aplicación. Para ello se sistematizan los fundamentos teóricos, se analizan soluciones homólogas, se especifican los requisitos y se diseña la arquitectura de la solución con un enfoque iterativo e incremental. Se espera que el sistema facilite la incorporación de pagos digitales en las aplicaciones nacionales y contribuya a la seguridad y la trazabilidad de las operaciones.
 
-\textbf{Palabras clave: }Microtransacciones, aplicaciones nacionales, pagos online\par}
+\textbf{Palabras clave: }microtransacciones; pasarelas de pago; interfaz de programación de aplicaciones; webhooks; comercio electrónico; Cuba.\par}
 
 \newpage
 \textbf{\textit{Abstract}}\par
 \vspace{11.35bp}
-\textit{In recent years, the mobile application market in Cuba has grown thanks to platforms such as Apklis, which since 2018 has enabled developers to publish and even sell their own applications. Similarly, the ecosystem of websites and web applications has expanded due to hosting services provided by Espacio 3W and the rental of Virtual Private Servers offered by ETECSA. However, commercial transactions continue to be carried out mainly through external messaging applications such as WhatsApp, Telegram, or Messenger, where payments are arranged through transfers using Transfermóvil or EnZona, or by cash on delivery. This communication channel, required to complete transactions through account numbers that are usually personal accounts not linked to any company or self-employed worker, undermines customer confidence in making payments.}\par
-\textit{This work proposes a system through which developers can register products, generate payment links from their applications, and receive notifications when a payment is completed, allowing them to deliver the corresponding product or reward automatically. This approach could help reduce dependence on external messaging channels, improve transaction security and traceability, and support the development of higher-quality video games, online stores, and mobile applications in Cuba. By facilitating more transparent and convenient digital transactions, it may also contribute to strengthening confidence in the use of the national currency and electronic payment methods.}\par
+\textit{Software developers in Cuba face difficulties in adding online payments to their applications and websites through the national payment platforms, Transfermóvil and EnZona: lengthy contracting procedures, limited documentation, and the need to build a separate integration for each platform. As a result, many sales are handled through messaging applications, with payments sent to personal accounts, which reduces customer trust and hinders digital commerce.}\par
+\vspace{11.35bp}
+\textit{The aim of this work is to develop a web system that allows developers to charge microtransactions from their applications and websites through a single application programming interface, which manages the operation with the national payment platform and reports the result to the application. To this end, the theoretical foundations are systematized, similar solutions are analyzed, the requirements are specified and the architecture of the solution is designed following an iterative and incremental approach. The system is expected to make it easier to add digital payments to national applications and to improve the security and traceability of operations.}\par
 \vacio
-\textbf{\textit{Keywords: }}\textit{microtransactions, national applications, online payments}\par
+\textbf{\textit{Keywords: }}\textit{microtransactions; payment gateways; application programming interface; webhooks; e-commerce; Cuba.}\par
 \vacio
 \vacio
 
@@ -329,67 +347,30 @@ El presente trabajo propone un sistema que permita a los desarrolladores registr
 
 \tituloI*{Introducción}
 
-En la actualidad el comercio electrónico se ha convertido en una de las principales vías de intercambio de activos en el mundo, y nuestro país no se ha quedado atrás, desde hace unos años, antes de la llegada del internet a nuestro territorio, ya existía por medio del llamado “Paquete semanal” un directorio de anuncios de compraventa llamado Revolico, el cual se utilizaba para encontrar personas que estuvieran vendiendo un producto específico o interesados en su compra, luego a la llegada del internet, mediante los puntos “WIFI\_ETECSA” comenzó la adopción de las redes sociales por la población cubana, en un principio con el fin de comunicarse con familiares de fuera del país, o con fines de entretenimiento, sin emabargo rápidamente se comenzó a observar el surgimiento de grupos en redes sociales y aplicaciones de mensajería con el único objetivo de comercializar productos o servicios. Luego con la llegada del internet mediante la red móvil, se consolidó la web como un espacio de intercambios comerciales.
+El comercio electrónico y los pagos digitales han transformado la forma en que se comercializan los productos y servicios, en particular los de naturaleza digital. En este ámbito, las microtransacciones, es decir, los pagos de pequeño importe realizados en línea, se han consolidado como modelo de ingresos de las aplicaciones y los videojuegos: según Tomić~\cite{tomic}, cerca de la mitad de los ingresos de las grandes editoras de videojuegos procede de ellas.
 
-Con esta evolución en las comunicaciones, lo esperable sería que se observara una evolución en las formas de pago, con medios digitales que permitan a los cubanos realizar transacciones sin necesidad de salir de sus casas, y con ese objetivo, en 2015 ETECSA lanzó la primera versión de Transfermóvil, que le permitió a los clientes de los diferentes bancos nacionales realizar este tipo de operaciones desde su teléfono móvil mediante el protocolo de comunicación Unstructured Supplementary Service Data (USSD), para el envío de solicitudes y Short Message Service (SMS) para la recepción del resultado de las consultas. Luego en 2019 nace EnZona, una aplicación móvil que permitía tener los mismos beneficios que Transfermóvil, pero utilizando protocolo HTTPS para una mayor usabilidad y seguridad, ya que el usuario no tenía que salir de la aplicación para consultar su saldo o el resultado de una operación.
+En Cuba, el proceso de bancarización ha impulsado la incorporación de canales de pago electrónico en los comercios~\cite{granma23}. Dos plataformas nacionales sustentan estos pagos: Transfermóvil, que comenzó a funcionar en 2015~\cite{etecsa}, y EnZona, puesta en explotación en julio de 2019~\cite{cubadebate21}. La primera superó los tres millones de usuarios en 2022~\cite{etecsa} y la segunda los 800 mil en 2023~\cite{mesa23b}. A ello se suma que la telefonía móvil llega a 7,8 millones de cubanos y que la cobertura poblacional de datos móviles supera el 85 \%~\cite{mesa23a}.
 
-Sin embargo la existencia de las pasarelas de pago no asegura su adopción por parte de los desarrolladores, ya que estos deben realizar trámites que en muchos casos son prohibitivos para negocios pequeños.
+Sin embargo, la existencia de pasarelas de pago no asegura que los desarrolladores puedan incorporarlas a sus productos. Para cobrar en línea deben contratar el servicio con cada plataforma mediante procedimientos propios~\cite{granma23,oncuba23}. A esto se suman, según la experiencia del autor que se detalla en el epígrafe 1.3, la documentación pública limitada, la escasa comunicación con la comunidad de desarrolladores y la restricción de las direcciones IP con acceso al servicio. Por ello, muchas ventas se cierran mediante aplicaciones de mensajería, con pagos a cuentas personales no vinculadas a una entidad comercial ni a un trabajo por cuenta propia, lo que reduce la confianza del cliente y consume el tiempo del vendedor.
 
-\newpage
-\textbf{Transfermóvil}
+\textbf{Problema científico:} ¿Cómo facilitar a los desarrolladores cubanos la incorporación de microtransacciones en sus aplicaciones y sitios web mediante las plataformas de pago nacionales?
 
-Es la pasarela de pagos más utilizada por la población debido a su configuración automática a la hora de crear una cuenta bancaria, y por la facilidad que brinda utilizar códigos USSD y SMS en el contexto cubano de problemas en las redes de comunicaciones.
-
-Sin embargo la contratación de la API de pagos pasa por varios inconvenientes, como:
-\begin{enumerate}[parsep=5.7bp]
-  \item Falta de documentación pública
-  \item Falta de comunicación con la comunidad de desarrolladores
-  \item Sistema complejo de implementación
-  \item Regulación de las direcciones IP que pueden tener acceso a este servicio
-\end{enumerate}
-
-\textbf{EnZona}
-
-Su adopción por parte de la población no es tan extensa como sí es el caso de transfermóvil debido a que los problemas de comunicación que afectan a nuestro país influyen en que las peticiones HTTPS tarden en enviarse y en llegar la respuesta.
-
-Esta sin embargo es la plataforma que mejor acceso brinda a los desarrolladores a su API, esto no significa que sea perfecta, presentando inconvenientes como:
-\begin{enumerate}[parsep=5.7bp]
-  \item Documentación pública existente, pero en algunos casos deficiente
-  \item Falta de comunicación con la comunidad de desarrolladores
-  \item Regulación de las direcciones IP que pueden tener acceso a este servicio
-\end{enumerate}
-
-\vacio
-Estas insuficiencias evidencian la necesidad de crear un ecosistema que permita a los desarrolladores cubanos comercializar sus productos y servicios a través de sus aplicaciones de una forma más accesible para ellos y sus clientes.
-
-Es por esto que mediante el presente informe técnico se busca responder ¿Cuál es la mejor manera de crear un sistema que unifique los métodos de pagos para los desarrolladores de aplicaciones cubanos? ¿De qué manera se logra crear un sistema como este con el nivel de seguridad necesario por la criticidad de las operaciones que se realizarán en este? ¿Qué características debe tener un sistema como este para conseguir su adopción por la comunidad de desarrolladores cubanos?
-
-Es por ello que el presente sistema tiene como principal objetivo: \textbf{Brindar a los desarrolladores de software cubanos, una plataforma segura, y con todas las características necesarias para vender sus productos y/o servicios desde sus propias aplicaciones o sitios web}.
+\textbf{Objeto de estudio:} Los procesos de cobro de productos y servicios digitales en aplicaciones y sitios web desarrollados en Cuba.
 
 \textbf{Campo de acción:} La integración y gestión de microtransacciones mediante plataformas de pago nacionales en aplicaciones y sitios web desarrollados en Cuba, con énfasis en la generación de enlaces de pago, la confirmación de las transacciones y la notificación de sus resultados a las aplicaciones.
-\newpage
 
-Sin embargo, primero debemos definir sub objetivos más atómicos que nos permitan llegar al objetivo general antes mencionado.
+\textbf{Objetivo general:} Desarrollar un sistema web que permita a los desarrolladores de software cubanos cobrar por sus productos y servicios desde sus propias aplicaciones o sitios web mediante las plataformas de pago nacionales, de forma segura y con una única integración.
 
-\textbf{Conocer el estado del arte:} Un estudio del estado del arte es necesario para conocer cómo lo hacen sistemas que ya están consolidados, y poder traer las buenas prácticas a nuestro producto.
-
-\textbf{Conocer las limitaciones del contexto nacional:} Cuáles son las limitantes que puede tener un software como este en el contexto de nuestro país, conocer el impacto de las sanciones impuestas por el gobierno de Estados Unidos sobre un sistema como el antes descrito.
-
-\textbf{Definir las características del software:} Una vez conocido el estado del arte y las limitaciones que tiene el contexto nacional, es necesario identificar cuales son los requisitios funcionales y casos de uso relevantes para el público identificado.
-
-\textbf{Definir los servicios externos y bibliotecas de terceros que utilizará el software:} El desarrollo de software actual no se realiza desde cero, siempre se utilizan componentes de terceros, por ejemplo bibliotecas o servicios, es necesario conocer cuales serán aquellas a utilizar.
-
-\textbf{Definir los requisitios no funcionales:} Se deben reconocer cuales serán las características del software a nivel no funcional, como la infraestructura, la usabilidad, componentes a utilizar, y rendimiento deseado.
-
-\textbf{Diseñar la arquitectura del software:} Hay que crear los cimientos del software antes de proceder a su construcción, es por esto que la arquitectura debe ser prioridad a la hora de crear una plataforma como esta.
-
-\textbf{Construir la primera versión del software:} Con el objetivo de probar el concepto, y conocer el nivel de aceptación se debe desarrollar una primera versión del software con los casos de uso y requisitos definidos con criticidad alta.
-
-\textbf{Probar del software:} Un software con una criticidad alta como este por su manejo de pagos, debe someterse a una serie de pruebas tanto a nivel funcional como no funcional para conocer la calidad del mismo y la seguridad que tiene antes de su lanzamiento.
-
-\vacio
-\newpage
-\textbf{Presupuestos hipotéticos}
+\textbf{Objetivos específicos:}
+\begin{enumerate}[parsep=5.7bp]
+  \item Sistematizar los fundamentos teóricos y las soluciones homólogas relacionados con las microtransacciones y la integración de pasarelas de pago.
+  \item Caracterizar las limitaciones técnicas y de acceso del contexto nacional para la integración de plataformas de pago.
+  \item Especificar los requisitos funcionales y no funcionales del sistema.
+  \item Seleccionar los servicios externos, las bibliotecas y las herramientas con los que se desarrollará el sistema.
+  \item Diseñar la arquitectura del sistema.
+  \item Construir una primera versión funcional con los requisitos de criticidad alta.
+  \item Probar el sistema a nivel funcional y no funcional para evaluar su calidad y su seguridad.
+\end{enumerate}
 
 \textbf{Hipótesis:} El desarrollo de un sistema que integre plataformas de pago nacionales y proporcione mecanismos para generar enlaces de pago y notificar la confirmación de las transacciones puede facilitar la incorporación de microtransacciones en aplicaciones y sitios web cubanos.
 
@@ -401,9 +382,11 @@ Sin embargo, primero debemos definir sub objetivos más atómicos que nos permit
   \item ¿En qué medida la solución propuesta facilita la integración de microtransacciones y cumple los requisitos definidos?
 \end{enumerate}
 
-\textbf{Métodos científicos:} Para el desarrollo de la investigación se empleará el método analítico-sintético en el estudio de las plataformas de pago nacionales y sus mecanismos de integración. Se utilizará la modelación para representar la arquitectura, los datos y las interacciones de la solución propuesta. Como parte del trabajo empírico, se realizará una revisión documental de fuentes oficiales y técnicas, y se aplicarán pruebas de software para evaluar el cumplimiento de los requisitos definidos. Los resultados de las pruebas se registrarán mediante una matriz de casos de prueba.
+\textbf{Métodos científicos:} Para el desarrollo de la investigación se emplearán métodos teóricos y empíricos. Entre los teóricos, el analítico-sintético, en el estudio de las plataformas de pago nacionales, las soluciones homólogas y sus mecanismos de integración, y la modelación, para representar la arquitectura, los datos y las interacciones de la solución. Entre los empíricos, la observación, en la caracterización de los procesos de cobro actuales; la entrevista semiestructurada a desarrolladores y responsables de emprendimientos, para conocer cómo gestionan los cobros y qué dificultades encuentran; la revisión documental de fuentes oficiales y técnicas; y las pruebas de software, para evaluar el cumplimiento de los requisitos definidos, cuyos resultados se registrarán mediante una matriz de casos de prueba.
 
-Un sistema que permita a los desarrolladores de software cubanos poder cobrar por su trabajo de una forma sencilla, legal, y transparente provocará un crecimiento en el mercado de aplicaciones nacionales, lo cual ayudará a nuestro país a dar un paso más hacia la independencia tecnológica, ya que servicios que actualmente deben ser contratados a compañías de terceros países podrán tener una alternativa nacional de calidad en un mercado competitivo nacional.
+\textbf{Aporte práctico:} Un sistema que permita a los desarrolladores de software cubanos cobrar por su trabajo de forma sencilla, legal y transparente puede contribuir al crecimiento del mercado de aplicaciones nacionales y ofrecer una alternativa nacional a servicios que hoy se contratan a empresas de otros países.
+
+\textbf{Estructura del documento:} El informe se organiza en tres capítulos. El Capítulo I presenta los fundamentos teóricos, el análisis de soluciones homólogas, el diagnóstico de la situación actual y el entorno de desarrollo. El Capítulo II expone las necesidades del cliente, la propuesta de solución técnica, los requisitos y el diseño de la arquitectura. El Capítulo III aborda el diseño de la base de datos, los prototipos funcionales de interfaz y la codificación.
 
 {\fontsize{11bp}{13.65bp}\selectfont\vacio\vacio}
 
@@ -417,128 +400,163 @@ Un sistema que permita a los desarrolladores de software cubanos poder cobrar po
 
 \tituloI{Capítulo I: Marco teórico y diagnóstico}
 
-En este capítulo se presentan los fundamentos teóricos que sustentan el desarrollo de un sistema de microtransacciones mediante plataformas de pago nacionales. Se abordan los conceptos relacionados con las microtransacciones, las pasarelas de pago y los mecanismos de integración y confirmación de las operaciones. Asimismo, se analizan soluciones similares para identificar sus aportes y limitaciones respecto al contexto cubano. Posteriormente, se describe el contexto en el que se desarrolla la investigación y las dificultades existentes para incorporar pagos en aplicaciones y sitios web nacionales. Finalmente, se exponen la metodología, los métodos y las herramientas seleccionados para desarrollar la propuesta.
+En este capítulo se presentan los fundamentos teóricos que sustentan el desarrollo de un sistema de microtransacciones mediante plataformas de pago nacionales. Se abordan los conceptos relacionados con las microtransacciones, las interfaces de programación, las pasarelas de pago, las notificaciones automáticas y el contexto cubano de los pagos electrónicos. Asimismo, se analizan soluciones similares para identificar sus aportes y limitaciones respecto al contexto cubano. Posteriormente, se describe el contexto en el que se desarrolla la investigación y las dificultades existentes para incorporar pagos en aplicaciones y sitios web nacionales. Finalmente, se exponen la metodología y el entorno de desarrollo seleccionados para construir la propuesta.
 
 \vacio
 \tituloII{1.1 Fundamentos y referentes teórico-metodológicos sobre el objeto de estudio.}
 
-Los cobros en aplicaciones y sitios web son un problema que ya ha sido abordado en el mundo mediante plataformas que han brindado una solución accesible a los desarrolladores que buscan generar ingresos mediante sus productos y servicios, con referentes internacionales como Stripe, Google Pay o Mercado Pago. Como parte de los conceptos y conocimientos que sustentan la investigación se encuentran las microtransacciones, que son operaciones de pequeño importe, frecuentemente asociadas a bienes o servicios digitales, estos a su vez son implementados mediante una \textit{API }que es la encargada de conectar la aplicación con el sistema, y a este último con la pasarela de pagos, que es la plataforma responsable de realizar las transacciones bancarias asociadas a los pagos, y cuando un pago es completado, o rechazado, debe ser notificado correctamente mediante un sistema de notificaciones automáticas, basado en el mecanismo \textit{Webhook}. Y todo esto ocurre en el contexto nacional con sus complejidades, caracterizado por un estado de crisis económica y depreciación constante de la moneda nacional.
+Para fundamentar la propuesta es necesario precisar, en primer lugar, qué se entiende por microtransacción y qué características la distinguen, pues de ellas depende lo que el sistema debe soportar. A continuación se describen los elementos tecnológicos que permiten cobrar una microtransacción desde una aplicación: la interfaz de programación mediante la cual esta solicita el cobro, la pasarela de pago que lo procesa y el mecanismo de notificación que comunica el resultado. Por último, se caracteriza el contexto cubano de los pagos electrónicos en el que dichos elementos deben integrarse.
 
-\newpage
+\vacio
 \textbf{1.1.1 Microtransacciones}
 
-Las microtransacciones son operaciones económicas de pequeño importe, frecuentemente asociadas a la adquisición de bienes o servicios digitales dentro de aplicaciones y sitios web. En los videojuegos, por ejemplo, pueden utilizarse para comprar objetos virtuales, elementos de personalización o contenidos adicionales.
+\textit{Concepto.} Una microtransacción es un micropago, es decir, un pago de una pequeña cantidad de dinero realizado en línea, típicamente en un entorno de juego~\cite{rita24}. Tomić~\cite{tomic} la define como el pago que se realiza por adquirir una aplicación móvil o contenido adicional dentro de un videojuego. En la bibliografía el término se asocia sobre todo con los videojuegos y las aplicaciones móviles, aunque sus características son extensibles a cualquier producto o servicio digital de bajo valor.
 
-En la presente investigación, las microtransacciones constituyen el tipo de operación que gestionará el sistema propuesto. Este facilitará que los desarrolladores reciban pagos mediante plataformas nacionales y que sus aplicaciones conozcan el resultado de cada operación para entregar el producto o servicio correspondiente.
+\textit{Características.} De la bibliografía consultada se desprenden las siguientes:
+\begin{itemize}[parsep=5.7bp]
+  \item \textbf{Importe reducido y compra repetible.} Los pagos son de poca cuantía y se realizan de forma sucesiva, a medida que el usuario adquiere contenido adicional~\cite{tomic,rita24}.
+  \item \textbf{Bien digital ligado a su plataforma.} Lo que se adquiere es un bien virtual cuyo valor depende del entorno en el que puede utilizarse~\cite{hamarik17}. Por ello, el pago debe confirmarse con rapidez para que la aplicación entregue el bien de forma inmediata.
+  \item \textbf{Sensibilidad a la fricción del pago.} Odlyzko~\cite{odlyzko03} sostiene que los micropagos enfrentan obstáculos económicos, sociológicos y psicológicos, y no solo tecnológicos, que limitan su adopción. En consecuencia, un sistema de microtransacciones debe reducir al mínimo los pasos que el cliente realiza para pagar.
+  \item \textbf{Costo del servicio de cobro.} En el contexto nacional, el costo de los servicios de pago electrónico depende del plan contratado~\cite{granma23}, lo que puede incidir en la viabilidad de cobrar importes pequeños.
+\end{itemize}
+
+\textit{Tipos.} Zendle, Meyer y Ballou~\cite{zendle20} distinguen las microtransacciones cosméticas, que modifican la apariencia sin ofrecer ventaja alguna, de las de tipo \textit{pay to win}, que aumentan las posibilidades de éxito del usuario; además estudian las cajas de botín (\textit{loot boxes}), cuyo contenido no se conoce de antemano. Con frecuencia se emplea una moneda virtual como intermediaria, una de cuyas formas, la moneda \textit{premium}, solo puede obtenerse mediante pago~\cite{tomic}.
+
+\textit{Modelos de negocio y motivaciones.} Las microtransacciones sustentan el modelo \textit{free-to-play}, en el que el producto se obtiene sin costo y los ingresos provienen de la venta de bienes virtuales~\cite{hamari15,tomic}. Hamari~\cite{hamari15} halló que la actitud hacia los bienes virtuales y la opinión del entorno social aumentan la intención de compra, mientras que el disfrute del juego la reduce; y la revisión de Hamari y Keronen~\cite{hamarik17} confirma que las razones de compra están estrechamente ligadas a la plataforma donde se venden los bienes.
+
+En la presente investigación, las microtransacciones constituyen el tipo de operación que gestionará el sistema propuesto. Este facilitará que los desarrolladores reciban pagos mediante plataformas nacionales y que sus aplicaciones conozcan el resultado de cada operación para entregar el producto o servicio correspondiente. Para cobrar estas operaciones, la aplicación debe poder solicitar el pago a otro sistema, lo que conduce al concepto de interfaz de programación.
 
 \vacio
 \textbf{1.1.2 Interfaces de programación de aplicaciones (API)}
 
-Una interfaz de programación de aplicaciones (API, por sus siglas en inglés) define un conjunto de operaciones y reglas que permite la comunicación entre sistemas de software. Mediante estas interfaces, una aplicación puede solicitar servicios e intercambiar información con otra sin conocer los detalles de su implementación interna.
+Una interfaz de programación de aplicaciones (API, por sus siglas en inglés) define un conjunto de operaciones y reglas que permite la comunicación entre sistemas de software, sin que uno deba conocer los detalles de implementación interna del otro. En la web, las API suelen apoyarse en el estilo arquitectónico REST propuesto por Fielding~\cite{fielding00}, que se basa en la identificación de recursos accesibles mediante HTTP y establece restricciones como la separación entre cliente y servidor y la comunicación sin estado entre solicitudes. Los proveedores de pagos exponen sus servicios mediante interfaces de este tipo; por ejemplo, Stripe permite crear enlaces de pago que el comercio comparte con sus clientes~\cite{stripelinks}.
 
-En la presente investigación, las API permitirán la comunicación entre las aplicaciones de los desarrolladores y el sistema propuesto, así como la integración de este con las plataformas de pago nacionales. A través de estas interfaces se podrán solicitar enlaces de pago y consultar el estado de las operaciones, de acuerdo con las capacidades que ofrezca cada plataforma.
+En la presente investigación, las API permitirán la comunicación entre las aplicaciones de los desarrolladores y el sistema propuesto, así como la integración de este con las plataformas de pago nacionales. A través de estas interfaces se podrán solicitar enlaces de pago y consultar el estado de las operaciones, de acuerdo con las capacidades que ofrezca cada plataforma. La solicitud recibida por la API debe encaminarse hacia el sistema financiero, función que cumplen las pasarelas de pago.
 
 \textbf{1.1.3 Pasarelas de pago}
 
-Las pasarelas de pago son servicios que facilitan el procesamiento de pagos electrónicos mediante la comunicación entre los sistemas comerciales y los proveedores financieros que intervienen en una operación. Permiten transmitir las solicitudes de pago y obtener información sobre sus resultados, sin que deban confundirse con las entidades bancarias que ejecutan los movimientos de fondos.
+Según el Banco de la Reserva de la India~\cite{rbi19}, una pasarela de pago es un proveedor de infraestructura tecnológica que encamina y facilita el procesamiento de una transacción de pago en línea, sin intervenir en el manejo de los fondos. Esa misma fuente señala que las pasarelas y los agregadores de pago permiten a los comercios aceptar distintos instrumentos de pago sin necesidad de crear un sistema de integración propio. Esta definición distingue la pasarela de las entidades bancarias que ejecutan los movimientos de dinero.
 
-En la presente investigación, las plataformas de pago nacionales constituyen los servicios externos con los que se busca integrar el sistema propuesto. Este actuará como una capa de integración para facilitar que los desarrolladores incorporen cobros en sus aplicaciones, sin sustituir las funciones de las plataformas ni las de las entidades bancarias. El alcance de dicha integración dependerá de las interfaces disponibles y de las condiciones de acceso de cada proveedor.
+En la presente investigación, las plataformas de pago nacionales constituyen los servicios externos con los que se busca integrar el sistema propuesto. Este actuará como una capa de integración para facilitar que los desarrolladores incorporen cobros en sus aplicaciones, sin sustituir las funciones de las plataformas ni las de las entidades bancarias. El alcance de dicha integración dependerá de las interfaces disponibles y de las condiciones de acceso de cada proveedor. Una vez procesado el pago, la aplicación debe conocer su resultado, para lo cual se emplean las notificaciones automáticas.
 
 \textbf{1.1.4 Notificaciones automáticas mediante webhooks}
 
-Un webhook es un mecanismo de comunicación mediante el cual un sistema envía una solicitud HTTP a una dirección previamente configurada cuando ocurre un evento determinado. En el procesamiento de pagos, puede utilizarse para notificar cambios en el estado de una operación sin que el sistema receptor tenga que consultar continuamente si se han producido novedades.
+Un webhook es un mecanismo de comunicación mediante el cual un sistema envía una solicitud HTTP a una dirección previamente configurada cuando ocurre un evento determinado. Stripe lo describe como un punto de acceso HTTPS al que la plataforma envía, en formato JSON, los eventos ocurridos en la cuenta del comercio, lo que permite responder a eventos asíncronos, como la confirmación bancaria de un pago~\cite{stripeweb}. De este modo, el sistema receptor no tiene que consultar continuamente si se han producido novedades.
 
-En la presente investigación, los webhooks permitirán que el sistema propuesto notifique a las aplicaciones de los desarrolladores los cambios relevantes en el estado de las transacciones. Para que estas notificaciones puedan utilizarse de forma confiable, será necesario verificar su autenticidad y contemplar reintentos y un procesamiento idempotente, es decir, evitar que la recepción repetida de una misma notificación provoque la entrega duplicada de un producto o servicio. La confirmación del pago deberá sustentarse en información validada de la plataforma correspondiente.
+Para que estas notificaciones puedan utilizarse de forma confiable es necesario verificar su autenticidad, para lo cual se emplean firmas basadas en códigos de autenticación de mensajes con clave (HMAC)~\cite{rfc2104}, y contemplar los reintentos mediante un procesamiento idempotente, es decir, evitar que la recepción repetida de una misma notificación provoque la ejecución duplicada de una operación. Stripe aplica el mismo principio a las solicitudes de su API, que pueden reintentarse sin ejecutar dos veces la misma operación~\cite{stripeidem}. Además, la criticidad de estas interfaces exige controles de autenticación y autorización; el proyecto OWASP~\cite{owasp23} recoge entre los principales riesgos de seguridad de las API la autenticación defectuosa y la autorización deficiente a nivel de objeto.
+
+En la presente investigación, los webhooks permitirán que el sistema propuesto notifique a las aplicaciones de los desarrolladores los cambios relevantes en el estado de las transacciones. La confirmación del pago deberá sustentarse en información validada de la plataforma correspondiente. Los elementos descritos deben operar en el contexto cubano, que se caracteriza a continuación.
+
+\vacio
+\textbf{1.1.5 Los pagos electrónicos en el contexto cubano}
+
+Una de las medidas del Banco Central de Cuba en el camino hacia la bancarización es que los comercios que venden bienes y servicios incorporen canales de pago electrónico~\cite{granma23}. Dos plataformas sustentan estos pagos. Transfermóvil, desarrollada por ETECSA, comenzó a funcionar en 2015~\cite{etecsa}; requiere una tarjeta matriz de los bancos Metropolitano, de Crédito y Comercio o Popular de Ahorro, y permite operar sin activar los datos móviles~\cite{etecsat}. EnZona, desarrollada por XETID, se puso en explotación en julio de 2019 y en octubre de ese año incorporó el módulo de comercio electrónico con pago mediante código QR~\cite{cubadebate21}; funciona con tarjetas de los mismos bancos, necesita conexión de datos, aunque su acceso es libre de consumo en la red nacional~\cite{xetid,mesa23b}.
+
+Para integrarlas, los desarrolladores deben contratar el servicio. En Transfermóvil, la modalidad de tienda virtual permite el cobro en línea y la integración a su API, y la contratación se realiza de forma digital~\cite{oncuba23}. En EnZona, el comercio se registra en el Bulevar mediante cinco pasos y se suscribe a un plan, entre los que se encuentran la pasarela de pagos y los códigos QR estáticos y dinámicos, cuyo costo se calcula según la modalidad elegida~\cite{granma23}; además, XETID ofrece una interfaz para desarrollar aplicaciones con las API de la plataforma~\cite{xetid}. La penetración de la telefonía móvil, con 7,8 millones de cubanos con teléfono, y la cobertura de datos móviles, superior al 85 \% de la población~\cite{mesa23a}, ofrecen una base para estos servicios.
+
+Se observa así que existen plataformas y vías de integración, pero que cada una exige su propio proceso de contratación y su propia integración. Conocidos los fundamentos y el contexto, resulta necesario estudiar cómo se resuelve en la práctica el cobro en línea, lo que se aborda en el epígrafe siguiente.
 
 \vacio
 \tituloII{1.2 Soluciones homólogas.}
 
-El análisis de soluciones homólogas permite identificar experiencias y mecanismos de integración que pueden servir como referentes para el desarrollo del sistema propuesto. En esta investigación se consideran Stripe y Mercado Pago como referentes internacionales de integración de pagos, así como Transfermóvil y EnZona por su relevancia en el contexto cubano. Aunque estas soluciones presentan diferencias en su alcance y funcionamiento, su estudio permite reconocer características aplicables a la gestión de microtransacciones.
+El análisis de soluciones homólogas permite identificar experiencias y mecanismos de integración que pueden servir como referentes para el desarrollo del sistema propuesto. En esta investigación se consideran tres: Stripe, como referente internacional de integración de pagos para desarrolladores, y Transfermóvil y EnZona, por ser las plataformas nacionales con las que se integrará el sistema. Aunque presentan diferencias en su alcance y funcionamiento, se comparan según la forma de integración, la generación de enlaces de pago, la notificación de resultados y las condiciones de acceso.
 
-\newpage
+\vacio
 \textbf{1.2.1 Descripción y análisis de las particularidades relevantes}
 
 \textbf{Stripe}
 
-Stripe es una plataforma de servicios de pago que ofrece herramientas para incorporar cobros en aplicaciones y sitios web. Entre sus funcionalidades se encuentran las interfaces de programación de aplicaciones, la generación de enlaces de pago y las notificaciones mediante webhooks.
+Stripe es una plataforma de servicios de pago que ofrece herramientas para incorporar cobros en aplicaciones y sitios web. Permite crear enlaces de pago que el comercio comparte en redes sociales, correos electrónicos o su sitio web, sin escribir código~\cite{stripelinks}; envía los eventos ocurridos a un punto de acceso HTTPS del comercio mediante webhooks~\cite{stripeweb}; y admite solicitudes idempotentes en su API~\cite{stripeidem}.
 
-Su principal interés para esta investigación radica en la experiencia de integración que proporciona a los desarrolladores y en sus mecanismos para gestionar el ciclo de vida de los pagos. Constituye un referente para estudiar la documentación de una API, la comunicación de cambios de estado y el tratamiento de solicitudes repetidas.
-
-\vacio
-\textbf{Mercado Pago}
-
-Mercado Pago es una plataforma de pagos que proporciona herramientas para realizar cobros electrónicos. Dispone de alternativas de integración que permiten incorporar procesos de pago en aplicaciones y sitios web, así como consultar operaciones y recibir notificaciones sobre sus resultados.
-
-Para el sistema propuesto, resulta relevante estudiar la relación entre la creación de una solicitud de pago, su procesamiento y la comunicación del resultado al comercio. Sin embargo, sus funcionalidades y condiciones de acceso dependen del país en el que opera, por lo que su análisis se utiliza como referencia funcional y no como evidencia de disponibilidad para desarrolladores establecidos en Cuba.
+Su principal interés para esta investigación radica en la experiencia de integración que proporciona a los desarrolladores y en sus mecanismos para gestionar el ciclo de vida de los pagos. Constituye un referente para estudiar la documentación de una API, la comunicación de cambios de estado y el tratamiento de solicitudes repetidas. Se toma como referente funcional del diseño de la API, sin presuponer su disponibilidad para desarrolladores establecidos en Cuba.
 
 \vacio
 \textbf{Transfermóvil}
 
-Transfermóvil es una solución nacional que permite realizar pagos y otras operaciones desde dispositivos móviles. Su análisis resulta necesario porque constituye una de las plataformas con las que se pretende integrar el sistema propuesto.
+Transfermóvil es una solución nacional desarrollada por ETECSA que permite realizar pagos y otras operaciones desde dispositivos móviles, entre ellas el pago en tiendas virtuales~\cite{etecsat}. En su modalidad de tienda virtual, admite el cobro en línea y la integración a su API; el interesado contrata el servicio de forma digital y, una vez validada la solicitud, ETECSA o el Grupo de Electrónica para el Turismo habilitan el servicio~\cite{oncuba23}. Es, además, la plataforma con mayor número de usuarios~\cite{etecsa,mesa23b}.
 
 En esta investigación interesa estudiar sus mecanismos de pago a comercios y las condiciones técnicas y contractuales para incorporar dichos mecanismos en aplicaciones de terceros. Debe distinguirse entre las operaciones que puede realizar un usuario desde la aplicación y los servicios de integración disponibles para un desarrollador. Las posibilidades de automatizar la confirmación de pagos deberán determinarse a partir de documentación oficial y de las condiciones de acceso al servicio.
 
 \vacio
 \textbf{EnZona}
 
-EnZona es una plataforma nacional que ofrece servicios relacionados con los pagos electrónicos y el comercio digital. Su estudio se orienta a identificar las posibilidades de integración que proporciona a las aplicaciones y sitios web que necesitan gestionar cobros.
+EnZona es una plataforma cubana de comercio electrónico, desarrollada por XETID, que permite realizar y recibir transferencias y pagos con tarjetas de los bancos Metropolitano, BANDEC y BPA~\cite{xetid}. Para los comercios ofrece servicios de pasarela de pagos, códigos QR estáticos y dinámicos y Bulevar virtual~\cite{granma23}, y XETID declara una interfaz para desarrollar aplicaciones con sus API~\cite{xetid}. Según testimonios recogidos por la prensa, resulta más fácil de integrar con sitios web de terceros que otras alternativas nacionales~\cite{eltoque20}.
 
 Para esta investigación resulta relevante examinar los mecanismos de autenticación, creación de operaciones y consulta o notificación de sus resultados que se encuentren disponibles en su documentación. También deben analizarse los requisitos de contratación y las condiciones de acceso, pues estos elementos delimitan las posibilidades reales de integración con el sistema propuesto.
 
 \vacio
 \textbf{Síntesis del análisis}
 
-Las soluciones internacionales estudiadas constituyen referentes para identificar buenas prácticas de integración, documentación y comunicación de los resultados de los pagos. Por su parte, el análisis de Transfermóvil y EnZona permite delimitar las posibilidades y restricciones del entorno nacional.
-
-A partir de esta comparación, el sistema propuesto se concibe como una capa de integración orientada a simplificar la incorporación de pagos nacionales en aplicaciones y sitios web. Su alcance no consiste en sustituir las plataformas existentes, sino en facilitar su utilización mediante una interfaz común, la gestión de enlaces de pago y la notificación del resultado de las operaciones, siempre que las capacidades y condiciones de cada proveedor lo permitan.
+La Tabla~\ref{tab:comparacion-homologas} resume la comparación. Cuando las fuentes consultadas no permiten afirmar que una característica esté disponible, se indica que debe confirmarse con la documentación oficial.
 
 \vacio
-\newpage
+\tabla{comparacion-homologas}{Comparación de las soluciones homólogas.}{2.8cm,4.2cm,4.2cm,4.2cm}
+
+\vacio
+A partir de la comparación se determina qué se toma de cada solución y qué no. De Stripe se toma su modelo de integración: enlaces de pago, notificaciones mediante webhooks con verificación de su autenticidad y solicitudes idempotentes. No se trasladan sus medios de pago, pues el sistema opera con las plataformas y las tarjetas de los bancos nacionales. De Transfermóvil y EnZona se toman las vías de integración y las condiciones de contratación, que delimitan el alcance real del sistema. No se parte de que ofrezcan enlaces de pago ni notificaciones equivalentes a las de Stripe, por lo que el sistema deberá generar sus propios enlaces y confirmar el resultado de cada operación con la plataforma correspondiente.
+
+Con ello, el sistema propuesto se concibe como una capa de integración orientada a simplificar la incorporación de pagos nacionales en aplicaciones y sitios web. Su alcance no consiste en sustituir las plataformas existentes, sino en facilitar su utilización mediante una interfaz común, la gestión de enlaces de pago y la notificación del resultado de las operaciones, siempre que las capacidades y condiciones de cada proveedor lo permitan. Estos resultados se contrastan a continuación con un caso concreto.
+
+\vacio
 \tituloII{1.3 Diagnóstico organizacional.}
 
 La investigación se desarrolla en el contexto de aplicaciones como “El Yerro Menú”, cuyos productos y servicios se comercializan mediante su sitio web. Para caracterizar la gestión actual de los cobros se empleó la observación del proceso, con el propósito de identificar los actores involucrados, las actividades del proceso y las dificultades existentes.
 
 \vacio
-Actualmente, el proceso de cobro consiste en ponerse en contacto con el proveedor para que este le explique las condiciones del pago, y los métodos que puede utilizar, usualmente enviando un número de tarjeta y un número de teléfono para confirmar el pago. A partir de la información recopilada se identificó que el proveedor pierde demasiado tiempo en interactuar con clientes que no están realmente interesados en realizar la comra, además de que la confianza del cliente se ve afectada al momento de enviar una transferencia bancara a una cuenta bancaria de un desconocido.
+Actualmente, el proceso de cobro consiste en ponerse en contacto con el proveedor para que este le explique las condiciones del pago, y los métodos que puede utilizar, usualmente enviando un número de tarjeta y un número de teléfono para confirmar el pago. A partir de la información recopilada se identificó que el proveedor pierde demasiado tiempo en interactuar con clientes que no están realmente interesados en realizar la compra, además de que la confianza del cliente se ve afectada al momento de enviar una transferencia bancaria a una cuenta bancaria de un desconocido.
 
 \vacio
-Estas insuficiencias evidencian la necesidad de facilitar la integración con las plataformas de pago nacionales y automatizar, cuando sus capacidades lo permitan, la confirmación de las operaciones y la comunicación de sus resultados.
+Por otra parte, a partir de su experiencia como desarrollador, el autor identificó dificultades para contratar y utilizar las API de pago de las dos plataformas nacionales.
+
+\textbf{Transfermóvil.} Es la plataforma con mayor número de usuarios, por lo que resulta la más habitual entre los clientes. Sin embargo, la contratación de su API pasa por varios inconvenientes:
+\begin{enumerate}[parsep=5.7bp]
+  \item Falta de documentación pública.
+  \item Falta de comunicación con la comunidad de desarrolladores.
+  \item Sistema complejo de implementación.
+  \item Regulación de las direcciones IP que pueden tener acceso al servicio.
+\end{enumerate}
+
+\textbf{EnZona.} Su adopción por parte de la población es menor, pero es la plataforma que mejor acceso brinda a los desarrolladores a su API. Esto no significa que sea perfecta, pues presenta inconvenientes como:
+\begin{enumerate}[parsep=5.7bp]
+  \item Documentación pública existente, pero en algunos casos deficiente.
+  \item Falta de comunicación con la comunidad de desarrolladores.
+  \item Regulación de las direcciones IP que pueden tener acceso al servicio.
+\end{enumerate}
 
 \vacio
-\tituloII{1.4 Metodología, métodos y herramientas.}
-
-El desarrollo del sistema propuesto se organizará mediante un enfoque iterativo e incremental, que permitirá construir y evaluar progresivamente sus funcionalidades. Se priorizarán los mecanismos de integración con las plataformas de pago nacionales, la generación de enlaces de pago y la notificación del resultado de las operaciones. Este enfoque permitirá ajustar la solución a las necesidades identificadas y a las condiciones técnicas de los servicios externos.
-
-Para el desarrollo de la investigación se emplearán los siguientes métodos y técnicas:
+Estas insuficiencias evidencian la necesidad de facilitar la integración con las plataformas de pago nacionales y automatizar, cuando sus capacidades lo permitan, la confirmación de las operaciones y la comunicación de sus resultados. Para construir la solución es necesario definir ahora cómo se desarrollará.
 
 \vacio
-\textbf{Método analítico-sintético.} Se utilizará para estudiar los conceptos relacionados con las microtransacciones, las interfaces de programación de aplicaciones, las pasarelas de pago y los mecanismos de notificación. Asimismo, permitirá analizar las soluciones homólogas y seleccionar las características pertinentes para el contexto de la investigación.
+\tituloII{1.4 Metodología y entorno de desarrollo.}
+
+El desarrollo del sistema se organizará mediante un enfoque iterativo e incremental, cuyo rasgo común, según Larman y Basili~\cite{larman03}, es evitar un proceso secuencial de una sola pasada, dirigido por documentos y por etapas cerradas. En cada iteración se analizan, diseñan, implementan y prueban un conjunto reducido de requisitos priorizados, de modo que el sistema crece de forma gradual y puede ajustarse a las condiciones técnicas de los servicios externos. Las primeras iteraciones priorizan los mecanismos de integración con las plataformas de pago nacionales, la generación de enlaces de pago y la notificación del resultado de las operaciones.
+
+Dada la criticidad de un sistema que gestiona operaciones de pago, el entorno de desarrollo se compone de tecnologías seguras, eficientes y de probada madurez:
+
+\begin{itemize}[parsep=5.7bp]
+  \item \textbf{TypeScript:} lenguaje que extiende JavaScript con un sistema de tipos~\cite{typescript}, lo que permite detectar errores durante el desarrollo y emplear un único lenguaje en la interfaz de usuario y en la API.
+  \item \textbf{Next.js:} marco de trabajo para aplicaciones web basado en React~\cite{nextjs}, que permite construir en un mismo proyecto la interfaz de usuario y la API del sistema, lo que simplifica el desarrollo, el despliegue y el mantenimiento.
+  \item \textbf{PostgreSQL:} sistema de gestión de bases de datos relacional de código abierto. Sus transacciones agrupan varios pasos en una única operación de todo o nada~\cite{postgres}, característica fundamental para el registro de pagos.
+  \item \textbf{Prisma ORM:} herramienta de mapeo objeto-relacional que facilita el acceso a la base de datos mediante consultas tipadas y gestiona la evolución del esquema mediante migraciones~\cite{prisma}.
+  \item \textbf{Zod:} biblioteca de validación de esquemas para TypeScript~\cite{zod}, que verifica la estructura y el contenido de los datos recibidos por la API y por los webhooks antes de procesarlos, lo que contribuye a la seguridad del sistema.
+  \item \textbf{MinIO:} servicio de almacenamiento de objetos compatible con la API de Amazon S3~\cite{minio}, que se empleará para guardar los archivos asociados al sistema, como las imágenes de los productos y servicios, y que puede desplegarse en infraestructura propia.
+  \item \textbf{Git:} sistema de control de versiones distribuido~\cite{chacon14}, que permite registrar la evolución del código en cada iteración.
+  \item \textbf{Excalidraw:} herramienta para elaborar los diagramas que modelan la arquitectura de la solución.
+\end{itemize}
 
 \vacio
-\textbf{Modelación.} Se empleará para representar los componentes del sistema, sus relaciones y los intercambios de información entre las aplicaciones de los desarrolladores y las plataformas de pago. También permitirá describir los datos y los estados de las operaciones, facilitando la comprensión y el diseño de la solución.
-
-\vacio
-\textbf{Revisión documental.} Se consultarán publicaciones académicas, documentación técnica y fuentes oficiales relacionadas con las plataformas estudiadas. Esta técnica permitirá fundamentar los conceptos utilizados e identificar las posibilidades y condiciones de integración de los servicios de pago nacionales.
-
-\vacio
-\textbf{Entrevistas semiestructuradas.} Se propone su aplicación a desarrolladores o responsables de emprendimientos que comercialicen productos y servicios mediante aplicaciones o sitios web. Su finalidad será conocer cómo gestionan actualmente los cobros, qué dificultades encuentran y qué necesidades consideran prioritarias. La información recopilada servirá para complementar el diagnóstico y orientar la identificación de requisitos.
-
-\vacio
-\textbf{Pruebas de software.} Se realizarán para evaluar el cumplimiento de los requisitos funcionales y no funcionales definidos. Se prestará especial atención a la confirmación de las operaciones, la autenticidad de las notificaciones y la prevención del procesamiento duplicado. Los resultados se registrarán mediante una matriz de casos de prueba que incluirá las condiciones de ejecución, los resultados esperados y los obtenidos.
-
-\vacio
-Como apoyo al desarrollo se utilizarán herramientas de control de versiones, modelado, pruebas de API y registro de incidencias. La selección del lenguaje de programación, el framework y el sistema de gestión de bases de datos se justificará según su compatibilidad con las plataformas de pago, sus posibilidades de despliegue, su mantenimiento y los requisitos de seguridad de la solución.
+Estas herramientas se complementan entre sí, cuentan con documentación pública y pueden desplegarse en infraestructura propia, lo que resulta pertinente dado el contexto nacional en que deberá operar la solución.
 
 \vacio
 \tituloII{Conclusiones del capítulo.}
 
-El estudio de los fundamentos teóricos permite reconocer la importancia de las API, las pasarelas de pago y las notificaciones automáticas para gestionar microtransacciones en aplicaciones y sitios web. Su articulación constituye una base para diseñar una solución que comunique el resultado de los pagos y facilite la entrega de los productos o servicios correspondientes.
+El estudio de los fundamentos teóricos permite reconocer las características de las microtransacciones y la importancia de las API, las pasarelas de pago y las notificaciones automáticas para gestionarlas en aplicaciones y sitios web. Su articulación constituye una base para diseñar una solución que comunique el resultado de los pagos y facilite la entrega de los productos o servicios correspondientes.
 
-El análisis de soluciones homólogas proporciona referentes para la integración y gestión de pagos. No obstante, las características de las soluciones internacionales no pueden trasladarse directamente al contexto cubano sin considerar las capacidades y condiciones de acceso de las plataformas nacionales.
+El análisis de las soluciones homólogas proporciona referentes para la integración y gestión de pagos. No obstante, las características de la solución internacional no pueden trasladarse directamente al contexto cubano sin considerar las capacidades y condiciones de acceso de las plataformas nacionales.
 
-La caracterización inicial del contexto permite situar la investigación, pero requiere profundizar en los procesos de cobro de los desarrolladores y emprendimientos a los que se dirige la propuesta. Por ello, será necesario complementar el diagnóstico con evidencias que permitan precisar sus dificultades y necesidades.
+El diagnóstico evidencia las dificultades de cobro que enfrentan los desarrolladores y los clientes en el contexto estudiado, aunque será necesario complementarlo con evidencias adicionales que permitan precisar sus necesidades.
 
-Finalmente, el enfoque iterativo e incremental y los métodos y técnicas seleccionados permitirán relacionar el estudio del problema con el diseño y la evaluación del sistema. Estos elementos orientarán la definición de las necesidades, los requisitos y la arquitectura que se abordarán en el capítulo siguiente.
+Finalmente, el enfoque iterativo e incremental y el entorno de desarrollo seleccionado permitirán relacionar el estudio del problema con el diseño y la evaluación del sistema. Estos elementos orientarán la definición de las necesidades, los requisitos y la arquitectura que se abordarán en el capítulo siguiente.
 
 % =====================================================================
 %  Sección 6 — Capítulo II
@@ -584,18 +602,7 @@ Mediante el sistema, el desarrollador podrá:
 El flujo de cobro propuesto se desarrolla en cuatro pasos. Primero, la aplicación del desarrollador solicita al sistema, mediante su API, un enlace de pago para un producto o servicio previamente registrado. Segundo, el cliente final accede a dicho enlace y realiza el pago a través de la plataforma nacional correspondiente. Tercero, el sistema confirma el resultado de la operación a partir de la información validada de la plataforma y actualiza su estado. Por último, el sistema notifica el resultado a la aplicación mediante un webhook, de modo que esta pueda entregar el producto o servicio. Con este flujo se eliminan la comunicación manual con el proveedor y el envío de datos bancarios a un desconocido, dificultades identificadas en el diagnóstico organizacional.
 
 \vacio
-Dada la criticidad de un sistema que gestiona operaciones de pago, su desarrollo debe apoyarse en tecnologías seguras, eficientes y de probada madurez en el mercado. Con este criterio se seleccionaron las siguientes tecnologías:
-
-\begin{itemize}[parsep=5.7bp]
-  \item \textbf{Next.js:} framework de desarrollo web basado en React que permite construir en un mismo proyecto la interfaz de usuario y la API del sistema, lo que simplifica el desarrollo, el despliegue y el mantenimiento de la solución.
-  \item \textbf{PostgreSQL:} sistema de gestión de bases de datos relacional de código abierto, reconocido por su fiabilidad y por sus garantías de integridad y consistencia mediante transacciones, características fundamentales para el registro de pagos.
-  \item \textbf{Prisma ORM:} herramienta de mapeo objeto-relacional que facilita el acceso a la base de datos mediante consultas tipadas, reduce los errores en el manejo de los datos y gestiona la evolución del esquema mediante migraciones.
-  \item \textbf{Zod:} biblioteca de validación de esquemas que permite verificar la estructura y el contenido de los datos recibidos por la API y por los webhooks antes de procesarlos, lo que contribuye a la seguridad del sistema.
-  \item \textbf{MinIO:} servicio de almacenamiento de objetos de código abierto, compatible con la API de Amazon S3, que se empleará para guardar los archivos asociados al sistema, como las imágenes de los productos y servicios, y que puede desplegarse en infraestructura propia.
-\end{itemize}
-
-\vacio
-Estas tecnologías son compatibles entre sí, cuentan con documentación amplia y una comunidad activa, y su uso conjunto en un único lenguaje, TypeScript, reduce la complejidad del desarrollo. La solución propuesta responde así a la necesidad de los desarrolladores de cobrar por sus productos y servicios de forma ágil, y constituye la base para la especificación de requisitos y el diseño de la arquitectura que se presentan a continuación.
+Dada la criticidad de un sistema que gestiona operaciones de pago, su desarrollo se apoya en las tecnologías seleccionadas en el epígrafe 1.4: Next.js para la interfaz de usuario y la API, PostgreSQL con Prisma ORM para los datos, Zod para validar la información recibida y MinIO para almacenar los archivos, todo ello en el lenguaje TypeScript. Su uso conjunto en un único lenguaje reduce la complejidad del desarrollo. La solución propuesta responde así a la necesidad de los desarrolladores de cobrar por sus productos y servicios de forma ágil, y constituye la base para la especificación de requisitos y el diseño de la arquitectura que se presentan a continuación.
 
 \vacio
 \tituloII{2.3 Especificación formal de requisitos funcionales y no funcionales.}
@@ -713,59 +720,38 @@ Las conclusiones se orientan a establecer los argumentos que respaldan la posici
 
 \tituloI{Referencias Bibliográficas}
 
-{\onceUnoQuince
-<Listado de las referencias bibliográficas con igual tipo de fuente Arial, pero a tamaño 11 puntos e interlineado 1.15 puntos. En las referencias sólo se incluyen los trabajos citados explícitamente en el texto. Evite el uso de fuentes no confiables (Ilustrados.com; Wikipedia; aulafacil.com; monografías.com; sitios web no arbitrados o institucionales; publicaciones sin ISSN o ISBN o toda fuente que no sea posible localizar o cuyos datos de recuperación no sean posible de obtener). \uline{Toda la bibliografía usada debe estar acotada en el cuerpo del documento} siguiendo las pautas de la norma ISO 690-2 de la forma (Apellido, año) ej. (Jiménez, 2010)\par}
-\onceSencillo
-La bibliografía debe ser actualizada, representativa del área de conocimiento analizada, de fuentes de reconocida calidad; así como escritas y referenciadas utilizando alguna de las normas internacionalmente reconocidas. La calidad se mide en la \textbf{actualidad, fuentes de referencias y representatividad del objeto de estudio}. Se recomienda que al menos el \textbf{70\% de las fuentes se publicaron en los últimos 5 años}. Como norma sugerida pueden utilizar la ISO 690 -2.
-
-\vacio
-\vacio
-\textbf{Ejemplos:}\\
-\textbf{\uline{Artículo de revista:}}
-
-AUTOR (es). Título del artículo. Título de la revista, año, volumen (número de la publicación): página inicial-página final. Dirección DOI
-
-\textbf{Ejemplo:}\\
-- CULNAN, M. An analysis of the information usage patterns of academics and practitioners in computer field: A citation analysis of a national conference proceedings. Information Processing and Management, 1978, 14 (6): p. 395-404. DOI: http://dx.doi.org/10.1007/s10115-003-0128-3
-
-\mbox{}\\
-\textbf{\uline{Libro:}}\\
-AUTOR (es). Título. Ciudad, editorial, año. Número de páginas.
-
-\mbox{}\\
-\textbf{Ejemplo:}\\
-- SHACKELFORD, R.; CROSS, J. H., et al. Computing Curricula 2005: The Overview Report. ACM/IEEE Computer Society, 2005. 62 p.
-
-\mbox{}\\
-\textbf{\uline{Partes de libros:}}
-
-AUTOR (es). Título sección. En: Nombre editor. Título libro. Ciudad: Editorial, Año. Volumen, Páginas.\\
-\textbf{Ejemplo:}\\
-- MAHONEY, M. S. What Was the Question? The Origins of the Theory of Computation. En: Akera, A. y Aspray, W. (editores). Using History to Teach Computer Science and Related Disciplines. Washington, D.C.: Computer Research Association, 2004, p. 225-232.
-
-\mbox{}\\
-\textbf{\uline{Tesis:}}
-
-AUTOR (es). Título. Clase de tesis, Institución, Ciudad, Año.
-
-\textbf{Ejemplo:}\\
-- DODIG-CRNKOVIC, G. Computer science in a theory of science discourse. Master Thesis in Computer Science. Department of Computer Science. Mälardalen University, 2002.
-
-\mbox{}\\
-\textbf{\uline{Ponencia de Congreso:}}
-
-AUTOR (es). Título del artículo. En: Nombre del evento. Nombre de las Memorias. Lugar de publicación: editor, año, páginas.
-
-\textbf{Ejemplo:}\\
-- STEVENSON, D. E. Science, computational science, and computer science: at a crossroads. En: Proceedings of the 1993 ACM conference on Computer science. ACM Conference on Computer science. Indianapolis: ACM, 1993, p. 7-14. DOI: http://dx.doi.org/10.1007/s10115-003-0128-3
-
-\mbox{}\\
-\textbf{\uline{Fuente electrónica:}}
-
-AUTOR (es). Título del artículo. [Tipo de soporte] Título de la publicación electrónica, año. [Fecha de consulta]. Disponible en: [URL].
-
-\textbf{Ejemplo:}\\
-- YUAN, A.; JEANNETTE, J., et al. Characterizing and Mining the Citation Graph of the Computer Science Literature. [En línea]. Knowledge and Information Systems. 2004, vol. 6, [Consultado el: 12 de enero de 2010] 664-678 p. Disponible en: http://dx.doi.org/10.1007/s10115-003-0128-3
+\begin{referencias}
+\bibitem{tomic} TOMIĆ, N. Z. Economic model of microtransactions in video games. \textit{Journal of Economic Science Research}, 2019, 1 (1). DOI: 10.30564/jesr.v1i1.439
+\bibitem{granma23} GRANMA. ¿Cómo los comercios estatales y privados pueden contratar los servicios de Código QR para pagos electrónicos? [En línea]. \textit{Granma}, 13 de agosto de 2023. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://www.granma.cu/cuba/2023-08-13/como-los-comercios-estatales-y-privados-pueden-contratar-los-servicios-de-codigo-qr-para-pagos-electronicos-13-08-2023-19-08-56}
+\bibitem{etecsa} EMPRESA DE TELECOMUNICACIONES DE CUBA S.A. (ETECSA). Hitos de la historia. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{http://www.etecsa.cu/es/nosotros/hitos-de-la-historia}
+\bibitem{cubadebate21} CUBADEBATE. Informatizar(nos): Puntos claves de la venta electrónica en el Comercio Interior. [En línea]. 5 de mayo de 2021. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{http://www.cubadebate.cu/noticias/2021/05/05/informatizar-nos-puntos-claves-de-la-venta-electronica-en-el-comercio-interior/}
+\bibitem{mesa23b} MESA REDONDA. Pasarelas de pago e infraestructura tecnológica: Puntos claves para la bancarización. [En línea]. Cubadebate, 22 de agosto de 2023. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{http://mesaredonda.cubadebate.cu/mesa-redonda/2023/08/22/pasarelas-de-pago-e-infraestructura-tecnologica-puntos-claves-para-la-bancarizacion-video}
+\bibitem{mesa23a} MESA REDONDA. Comercio electrónico en Cuba: Entre lo real y lo posible. [En línea]. Cubadebate, 6 de junio de 2023. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{http://mesaredonda.cubadebate.cu/mesa-redonda/2023/06/06/comercio-electronico-en-cuba-entre-lo-real-y-lo-posible-video}
+\bibitem{oncuba23} REDACCIÓN OnCuba. Promueven en comercios estatales y privados contratación para pago electrónico. [En línea]. \textit{OnCubaNews}, 14 de agosto de 2023. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://oncubanews.com/cuba/promueven-en-comercios-estatales-y-privados-contratacion-para-pago-electronico}
+\bibitem{rita24} RITA, P.; GUERREIRO, J.; RAMOS, R.; CAETANO, R. G. The role of microtransactions in impulse buying and purchase intention in the video game market. \textit{Entertainment Computing}, 2024, 50: 100693. DOI: 10.1016/j.entcom.2024.100693
+\bibitem{hamarik17} HAMARI, J.; KERONEN, L. Why do people buy virtual goods: A meta-analysis. \textit{Computers in Human Behavior}, 2017, 71: p. 59-69. DOI: 10.1016/j.chb.2017.01.042
+\bibitem{odlyzko03} ODLYZKO, A. The Case Against Micropayments. En: Wright, R. N. (editor). \textit{Financial Cryptography: 7th International Conference, FC 2003}. Berlín: Springer, 2003, p. 77-83. (Lecture Notes in Computer Science, vol. 2742). DOI: 10.1007/978-3-540-45126-6\_6
+\bibitem{zendle20} ZENDLE, D.; MEYER, R.; BALLOU, N. The changing face of desktop video game monetisation: An exploration of exposure to loot boxes, pay to win, and cosmetic microtransactions in the most-played Steam games of 2010-2019. \textit{PLOS ONE}, 2020, 15 (5): e0232780. DOI: 10.1371/journal.pone.0232780
+\bibitem{hamari15} HAMARI, J. Why do people buy virtual goods? Attitude toward virtual good purchases versus game enjoyment. \textit{International Journal of Information Management}, 2015, 35 (3): p. 299-308. DOI: 10.1016/j.ijinfomgt.2015.01.007
+\bibitem{fielding00} FIELDING, R. T. \textit{Architectural Styles and the Design of Network-based Software Architectures}. Doctoral dissertation, University of California, Irvine, 2000. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://www.ics.uci.edu/~fielding/pubs/dissertation/top.htm}
+\bibitem{stripelinks} STRIPE. Accept payments online without writing code (Payment Links). [En línea]. \textit{Stripe Documentation}. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://docs.stripe.com/payment-links}
+\bibitem{rbi19} RESERVE BANK OF INDIA. \textit{Discussion Paper on Guidelines for Payment Gateways and Payment Aggregators}. Mumbai: Department of Payment and Settlement Systems, 2019. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://rbidocs.rbi.org.in/rdocs/PublicationReport/Pdfs/DPSSDISCUSSIONPAPEREFCF5B7E17F9431185BD4FD57E540F47.PDF}
+\bibitem{stripeweb} STRIPE. Receive Stripe events in your webhook endpoint. [En línea]. \textit{Stripe Documentation}. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://docs.stripe.com/webhooks}
+\bibitem{rfc2104} KRAWCZYK, H.; BELLARE, M.; CANETTI, R. \textit{HMAC: Keyed-Hashing for Message Authentication}. RFC 2104. Internet Engineering Task Force, 1997. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://datatracker.ietf.org/doc/html/rfc2104}
+\bibitem{stripeidem} STRIPE. Idempotent requests. [En línea]. \textit{Stripe API Reference}. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://docs.stripe.com/api/idempotent_requests}
+\bibitem{owasp23} OWASP FOUNDATION. \textit{OWASP API Security Top 10 - 2023}. [En línea]. 2023. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://owasp.org/API-Security/editions/2023/en/0x11-t10/}
+\bibitem{etecsat} EMPRESA DE TELECOMUNICACIONES DE CUBA S.A. (ETECSA). Transfermóvil. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{http://www.etecsa.cu/es/personas/transfermovil}
+\bibitem{xetid} XETID. ENZONA. [En línea]. \textit{Portal Web de la XETID}. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://www.xetid.cu/es/productos/enzona}
+\bibitem{eltoque20} BOZA IBARRA, G. Pasarelas de pago en Cuba: ¿listas? [En línea]. \textit{elTOQUE}, 10 de febrero de 2020. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://eltoque.com/transfermovil-enzona-pasarelas-de-pago-en-cuba-ventajas-retos}
+\bibitem{larman03} LARMAN, C.; BASILI, V. R. Iterative and incremental development: a brief history. \textit{Computer}, 2003, 36 (6): p. 47-56. DOI: 10.1109/MC.2003.1204375
+\bibitem{typescript} MICROSOFT. \textit{TypeScript Documentation}. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://www.typescriptlang.org/docs/}
+\bibitem{nextjs} VERCEL. \textit{Next.js Documentation}. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://nextjs.org/docs}
+\bibitem{postgres} THE POSTGRESQL GLOBAL DEVELOPMENT GROUP. Transactions. En: \textit{PostgreSQL Documentation}. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://www.postgresql.org/docs/current/tutorial-transactions.html}
+\bibitem{prisma} PRISMA. \textit{Prisma ORM Documentation}. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://www.prisma.io/docs/orm}
+\bibitem{zod} ZOD. \textit{Zod: TypeScript-first schema validation}. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://zod.dev}
+\bibitem{minio} MINIO, INC. \textit{MinIO Object Store Documentation}. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://docs.min.io/community/minio-object-store/index.html}
+\bibitem{chacon14} CHACON, S.; STRAUB, B. \textit{Pro Git}. 2.ª ed. Apress, 2014. [En línea]. [Consultado el: 23 de noviembre de 2026]. Disponible en: \url{https://git-scm.com/book/en/v2}
+\end{referencias}
 
 % =====================================================================
 %  Sección 11 — Anexos (Arial 11, interlineado sencillo)
